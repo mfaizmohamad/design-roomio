@@ -1,0 +1,19 @@
+#!/bin/sh
+# Block direct commits to main — changes must go through a feature branch + PR.
+# Also drives the beads (bd) pre-commit hook, which exports the issue database
+# to .beads/issues.jsonl so tracker state travels with the commit.
+. "$(dirname "$0")/_beads.sh"
+
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+  echo "✖ Direct commits to '$branch' are not allowed."
+  echo "  Create a feature branch and open a PR:"
+  echo "    git switch -c feature/your-change"
+  exit 1
+fi
+
+# Beads runs AFTER the branch gate (nothing to export on a rejected commit) but
+# BEFORE the final exit — appended below it, it would never execute.
+run_beads_hook pre-commit "$@" || exit $?
+
+exit 0

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Beads (bd) post-merge hook — keeps the local issue database in sync with the
+# working tree after git moves it around. No-ops when bd is not installed.
+. "$(dirname "$0")/_beads.sh"
+run_beads_hook post-merge "$@" || exit $?
+exit 0

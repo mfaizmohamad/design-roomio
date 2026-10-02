@@ -1,0 +1,209 @@
+name: CI
+
+# Runs the FULL test set on every pull request and on pushes to feature branches.
+# main is protected: changes must land via a PR whose checks pass (no direct pushes).
+#
+# What is gated here (the same set `npm run test:all` runs locally):
+#   - test job: typecheck + lint + `npm test` + production build. `npm test` uses the
+#     root vitest.workspace.ts, which runs EVERY JS/TS suite in one pass:
+#     root (src/ + shared/lib/ + scripts/), camera-flythrough/, lighting/,
+#     multi-room/, persistence/, rendering/, texturing/ — 522 tests, not just
+#     the root suite's 283. All suites resolve deps from the root node_modules,
+#     so a single `npm ci` at the root is sufficient (workspace package.json
+#     files pin the same dep versions; no per-workspace install needed to test).
+#   - python job: detection-pipeline's 29 unittest tests. They are fully
+#     offline/headless (synthetic images, opencv-python-headless, no Ollama
+#     daemon or model, no downloaded fixtures), so they run in CI as-is.
+#   - server-test job: server/ API suite (vitest + supertest) against a
+#     throwaway Postgres service database (roomio_test), covering auth cookie
+#     flags, cross-user authz, rate limits, and the designs upsert race.
+#   - security job: `npm audit` on PRODUCTION dependencies (root + server/) and
+#     a gitleaks secret scan of the checked-out tree. Needs no install and no
+#     services, so it runs in parallel with the suites above and fails fast.
+#   - the test job also enforces the bundle-size budget after the build
+#     (`npm run check:size`), because the build succeeding says nothing about
+#     whether the 3D engine is still code-split. See scripts/size-check.mjs.
+#
+# Intentionally NOT run in CI (each needs live local infrastructure):
+#   - detection-pipeline/smoke_vlm.py + eval_runner.py — require a running
+#     Ollama daemon with a pulled vision model.
+#   - scripts/*-check.mjs puppeteer smokes (browser-check, auth-check,
+#     detect-check) — require a local Chrome, the dev servers on :5180/:5181,
+#     and Postgres.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore: [main]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      # ESLint over src/ + shared/ + scripts/ + server/. Only ERRORS fail the
+      # build: react/no-danger, no-eval, no-implied-eval and no-floating-promises
+      # are the security-relevant rules and are configured as errors, guarded by
+      # scripts/lint-config.test.mjs so they cannot be quietly demoted to 'warn'.
+      # Everything else (unused vars, `any`, react-refresh) is warn-level
+      # pre-existing debt and deliberately does not block. Formatting is NOT
+      # gated here yet — `npm run format:check` still reports differences until
+      # the repo-wide Prettier run lands as its own commit (roomio-zhs.1).
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests (vitest workspace — root + all workspace suites)
+        run: npm test
+
+      - name: Production build
+        run: npm run build
+
+      # A green typecheck and 716 green tests are both blind to the thing that
+      # actually costs users: the 3D engine falling out of its lazy chunk. When
+      # that happens the build still succeeds AND every chunk keeps its current
+      # size — only the entry's static-import graph changes. So this is measured
+      # separately, on the emitted dist/. (bead roomio-zhs.7, CLAUDE.md §8)
+      - name: Bundle-size budget
+        run: npm run check:size
+
+  python:
+    name: python (detection-pipeline)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: detection-pipeline/requirements.txt
+
+      - name: Install detection-pipeline deps
+        run: pip install -r detection-pipeline/requirements.txt
+
+      - name: Detection-pipeline tests (unittest)
+        run: npm run test:py
+
+  # Server API suite (vitest + supertest) against a throwaway Postgres database.
+  server-test:
+    name: server test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      - name: Install server dependencies
+        run: npm ci --prefix server
+
+      - name: Server tests (vitest + supertest)
+        run: npm test --prefix server
+        env:
+          PG_ADMIN_URL: postgresql://postgres:postgres@localhost:5432/postgres
+          TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/roomio_test
+
+  # Dependency advisories and secret scanning (bead roomio-xfk.1, CLAUDE.md §2).
+  #
+  # Every advisory this repo is currently carrying was found by a human running
+  # `npm audit` during a review. Nothing in CI would have surfaced them, and
+  # nothing would have stopped a credential from being committed.
+  security:
+    name: security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      # CLAUDE.md §2: "`npm audit --omit=dev` must be clean for anything that
+      # ships to users. Dev-only advisories get a ticket, not a release block."
+      #
+      #   --omit=dev           there is a CRITICAL advisory in vitest right now
+      #                        (GHSA-5xrq-8626-4rwp, tracked as roomio-xfk.2) plus
+      #                        high ones in vite, postcss, browserslist, nanoid
+      #                        and puppeteer-core's extract-zip. All are build- or
+      #                        test-time only and none can reach a user. Auditing
+      #                        dev deps here would redden every PR until those
+      #                        major bumps land, which is how an audit gate ends
+      #                        up deleted instead of obeyed.
+      #   --audit-level=high   high + critical block a merge. moderate and low are
+      #                        reported by a bare `npm audit` and tracked as beads
+      #                        (express 4 → qs is roomio-xfk.3; three-stdlib → fflate).
+      #   --package-lock-only  audit the tree `npm ci` WOULD install, straight from
+      #                        the lockfile. This job then needs no install at all
+      #                        (it is the fastest job in the matrix), and the
+      #                        verdict cannot drift with whatever happens to be
+      #                        sitting in a node_modules directory.
+      #
+      # Root and server/ are the two roots that ship. The island package roots
+      # (camera-flythrough/, lighting/, …) are deliberately not audited: CI never
+      # installs them, their imports resolve from the root node_modules, and none
+      # of them is published or deployed on its own (CLAUDE.md §7).
+      - name: npm audit — production dependencies (root)
+        run: npm audit --omit=dev --audit-level=high --package-lock-only
+
+      - name: npm audit — production dependencies (server)
+        run: npm audit --omit=dev --audit-level=high --package-lock-only --prefix server
+
+      # Pinned release binary rather than a marketplace action: gitleaks-action@v2
+      # requires a paid GITLEAKS_LICENSE the moment this repo moves under an
+      # organisation, and a pinned tarball is one less third-party action with a
+      # token in its hands. Bump the version deliberately.
+      - name: Install gitleaks
+        env:
+          GITLEAKS_VERSION: 8.28.0
+        run: |
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin gitleaks
+          gitleaks version
+
+      # `dir` scans the checked-out tree — which is exactly the set of files that
+      # are committed — rather than replaying history on every PR. That is the
+      # case that matters here: scripts/fb-cookies.txt/.json hold a live Facebook
+      # session and are gitignored, so the way they leak is a RENAME or a
+      # `git add -f`, and either one puts the cookies in this checkout under a
+      # name .gitignore says nothing about. The rule that catches them by content
+      # lives in .gitleaks.toml — gitleaks' stock ruleset does not.
+      #
+      # --redact: findings are printed to a build log. Never echo the secret.
+      - name: Secret scan (gitleaks)
+        run: gitleaks dir . --no-banner --redact --verbose

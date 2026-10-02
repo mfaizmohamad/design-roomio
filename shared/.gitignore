@@ -1,0 +1,5 @@
+# Runtime channels between agents — keep the folders, ignore transient payloads.
+requests/*
+results/*
+!requests/.gitkeep
+!results/.gitkeep

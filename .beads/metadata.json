@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "server",
+  "dolt_database": "roomio",
+  "project_id": "3d62f307-f455-4ae5-b06a-f968d8a84273"
+}

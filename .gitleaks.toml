@@ -1,0 +1,76 @@
+# Secret scanning config (CLAUDE.md §2 "Secrets", bead roomio-xfk.1).
+#
+# WHY THIS FILE EXISTS AT ALL — gitleaks' stock ruleset does NOT catch the one
+# secret this repo actually handles. Verified with gitleaks 8.28.0 against a
+# realistic Facebook cookie jar (both the Netscape `cookies.txt` and the
+# puppeteer JSON shapes that scripts/scrape-listings.mjs accepts): "no leaks
+# found". The default rules know AWS keys, GitHub PATs and Slack tokens; a
+# session cookie is just a high-entropy string next to a two-letter name, and
+# nothing generic fires on it.
+#
+# `scripts/fb-cookies.txt` / `.json` are gitignored and hold a LIVE logged-in
+# Facebook session for the scraper burner account. The failure this guards
+# against is not "someone commits the gitignored path" — .gitignore already
+# handles that — it is someone renaming the file (`session.json`, `cookies.bak`)
+# or running `git add -f`, at which point .gitignore is silent and the session
+# lands in a public repo. The rule below is keyed on the COOKIE NAMES, which
+# travel with the content whatever the file is called.
+#
+# Run it locally the way CI does: `npm run check:secrets`
+# (`brew install gitleaks`; CI pins the release binary in .github/workflows/ci.yml).
+# Note this scans the working tree WITHOUT consulting .gitignore, so locally it
+# will also flag a real scripts/fb-cookies.txt sitting in your checkout. That is
+# a feature, not noise — but it is why the CI copy scans a clean checkout, where
+# only genuinely committed files exist.
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "facebook-session-cookie"
+description = "Facebook session cookie jar (c_user/xs/datr/sb/fr) — a live logged-in session"
+# Prefilter: gitleaks only runs the regex on chunks containing one of these.
+keywords = ["c_user", "datr", "xs", "sb", "fr"]
+# Three shapes, because the scraper accepts two file formats and humans paste a
+# third:
+#   1. puppeteer/JSON cookie jar   { "name": "c_user", "value": "1000892…" }
+#   2. Netscape cookies.txt        .facebook.com\tTRUE\t/\tTRUE\t1789…\tc_user\t1000892…
+#   3. a raw Cookie header or env  c_user=1000892…; xs=42%3A…
+# Shapes 1 and 2 are anchored on their own file structure, so the cookie name
+# alone is a safe trigger there. Shape 3 is NOT: `name = value` is what all code
+# looks like. The first draft of this rule used `\b(c_user|xs|datr)\s*=\s*\S{8,}`
+# and immediately fired on `const xs = corners.map(…)` in
+# src/geometry/collision.test.ts and scripts/shoot-listing-replica.mjs. So shape
+# 3 matches the VALUE FORMAT of each cookie instead of just its name:
+#   c_user  a numeric account id
+#   xs      `<digits>%3A<token>` (or `:` unescaped) — the session token proper
+#   datr    a long base64url device token
+# `sb` and `fr` are dropped from shape 3 entirely; two-letter names cannot be
+# disambiguated from ordinary code and they never appear without `xs` anyway.
+regex = '''(?i)(?:"name"\s*:\s*"(?:c_user|xs|datr|sb|fr)"\s*,\s*"value"\s*:\s*"[^"]{8,}"|"value"\s*:\s*"[^"]{8,}"\s*,\s*"name"\s*:\s*"(?:c_user|xs|datr|sb|fr)"|\.?facebook\.com\t(?:[^\t]*\t){4}(?:c_user|xs|datr|sb|fr)\t[^\t\r\n]{8,}|\bc_user\s*=\s*["']?\d{9,20}|\bxs\s*=\s*["']?\d{1,3}(?:%3A|:)[A-Za-z0-9%_\-]{10,}|\bdatr\s*=\s*["']?[A-Za-z0-9_\-]{18,})'''
+
+[allowlist]
+# Deliberately almost empty. An earlier draft also excluded
+# scripts/scrape-listings.mjs (it names these cookies in its docstring and
+# parser), public/listings.json and the lockfiles — then a scan of the whole
+# tree with every one of those exclusions REMOVED still reported no leaks, so
+# each was insurance against a false positive that does not exist. They are gone:
+# scrape-listings.mjs is precisely the file someone would paste a real cookie
+# into, and an allowlist entry there would have made this scanner blind to it.
+#
+# If a rule does start crying wolf, add the narrowest possible entry here with
+# the rule id and the reason — never a whole directory of source.
+description = "build output only — never committed, so nothing here can leak via git"
+paths = [
+  '''(^|/)dist/''',
+  '''(^|/)node_modules/''',
+]
+# Exact-value exceptions (matched against the detected secret, so they cannot hide
+# any other value on the same line or in the same file):
+#   70c2d6…ae0e  Cloudflare Web Analytics SITE TOKEN for roomio-demo.pages.dev
+#                (scripts/lib/demo-csp.mjs). generic-api-key fires on it, but it is
+#                public by design: it is served in every page's HTML to every
+#                visitor and can only report page views for that one site.
+regexes = [
+  '''^70c2d627458848639446d30202f2ae0e$''',
+]

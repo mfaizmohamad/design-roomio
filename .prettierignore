@@ -1,0 +1,25 @@
+# Build output and vendored trees — never ours to format.
+node_modules
+dist
+dist-ssr
+**/dist
+**/node_modules
+
+# Generated / captured artefacts, not source.
+verify-out
+public/images
+public/videos
+docs/screenshots
+*.tsbuildinfo
+
+# Real scraped Facebook posts (CLAUDE.md §5: production personal data, not
+# fixtures). Reformatting it would rewrite the whole file and bury any real
+# change to the data in whitespace noise.
+public/listings.json
+
+# Lockfiles are npm's to write.
+package-lock.json
+**/package-lock.json
+
+# Python lives in detection-pipeline/ and is formatted by its own toolchain.
+detection-pipeline
