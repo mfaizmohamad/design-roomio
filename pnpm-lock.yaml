@@ -37,7 +37,10 @@ importers:
         version: 0.169.0
       three-gpu-pathtracer:
         specifier: 0.0.23
-        version: 0.0.23(three-mesh-bvh@0.7.8(three@0.169.0))(three@0.169.0)(xatlas-web@0.1.0)
+        version: 0.0.23(three-mesh-bvh@0.9.15(three@0.169.0))(three@0.169.0)(xatlas-web@0.1.0)
+      three-mesh-bvh:
+        specifier: ^0.9.15
+        version: 0.9.15(three@0.169.0)
       three-stdlib:
         specifier: ^2.36.1
         version: 2.36.1(three@0.169.0)
@@ -2143,6 +2146,11 @@ packages:
     deprecated: Deprecated due to three.js version incompatibility. Please use v0.8.0, instead.
     peerDependencies:
       three: '>= 0.151.0'
+
+  three-mesh-bvh@0.9.15:
+    resolution: {integrity: sha512-9xdEDkCzFoT8VPFH9DznwFSdbaIEjMvM106Iqq7TJurrIheUKDcdW4prfJTCxryih4XS/UxWs0H3K4MLMRFyOQ==}
+    peerDependencies:
+      three: '>= 0.159.0'
 
   three-stdlib@2.36.1:
     resolution: {integrity: sha512-XyGQrFmNQ5O/IoKm556ftwKsBg11TIb301MB5dWNicziQBEs2g3gtOYIf7pFiLa0zI2gUwhtCjv9fmjnxKZ1Cg==}
@@ -4791,13 +4799,17 @@ snapshots:
     transitivePeerDependencies:
       - react-native-b4a
 
-  three-gpu-pathtracer@0.0.23(three-mesh-bvh@0.7.8(three@0.169.0))(three@0.169.0)(xatlas-web@0.1.0):
+  three-gpu-pathtracer@0.0.23(three-mesh-bvh@0.9.15(three@0.169.0))(three@0.169.0)(xatlas-web@0.1.0):
     dependencies:
       three: 0.169.0
-      three-mesh-bvh: 0.7.8(three@0.169.0)
+      three-mesh-bvh: 0.9.15(three@0.169.0)
       xatlas-web: 0.1.0
 
   three-mesh-bvh@0.7.8(three@0.169.0):
+    dependencies:
+      three: 0.169.0
+
+  three-mesh-bvh@0.9.15(three@0.169.0):
     dependencies:
       three: 0.169.0
 
