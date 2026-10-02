@@ -9,6 +9,7 @@ export default defineConfig({
   // duplicate @react-three/fiber (from an island's own node_modules) throws "Hooks can only be used
   // within the Canvas component". No-op for islands that already resolve to root; required for any
   // island that ships its own R3F copy. (Added with Agent G's realism-layer mount.)
+  base: '/design-roomio/', 
   resolve: {
     dedupe: [
       'react',

@@ -2,6 +2,7 @@
   "name": "roomio",
   "private": true,
   "version": "0.1.0",
+"homepage": "https://mfaizmohamad.github.io/design-roomio/",
   "type": "module",
   "scripts": {
     "prepare": "git config core.hooksPath .githooks || true",
@@ -35,7 +36,9 @@
     "docs:shots": "node scripts/regen-screenshots.mjs",
     "verify:route": "node scripts/verify.mjs route",
     "verify:smoke": "node scripts/verify.mjs smoke",
-    "bootstrap:worktree": "node scripts/setup-worktree.mjs"
+    "bootstrap:worktree": "node scripts/setup-worktree.mjs",
+ "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.0",
