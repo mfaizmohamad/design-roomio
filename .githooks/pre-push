@@ -1,0 +1,37 @@
+#!/bin/sh
+# Run the deterministic test gate before any push, and refuse pushes that target
+# main directly (main only advances via a merged PR).
+#
+# `npm test` runs the root vitest.workspace.ts = EVERY JS/TS suite (root +
+# camera-flythrough + lighting + multi-room + persistence + rendering +
+# texturing + server), the same set CI gates. The detection-pipeline Python suite
+# runs too when its .venv exists; otherwise it is skipped here (CI always gates
+# it). Fast-failing: each step aborts the push immediately on failure.
+. "$(dirname "$0")/_beads.sh"
+
+remote="$1"
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/master)
+      echo "✖ Direct push to $remote_ref is not allowed — open a PR into main instead."
+      exit 1
+      ;;
+  esac
+done
+
+echo "▶ pre-push: type-check + lint + full unit-test set…"
+npm run typecheck || { echo "✖ type-check failed — push aborted."; exit 1; }
+# Lint before the tests: it is the cheapest gate and the only one that catches
+# the security sinks (react/no-danger, no-eval, no-implied-eval) and floating
+# promises, none of which a passing test suite would ever notice. Warnings do
+# not fail it — only the errors CI also fails on, so local and CI agree.
+npm run lint || { echo "✖ lint failed — push aborted."; exit 1; }
+npm test || { echo "✖ unit tests failed — push aborted."; exit 1; }
+node scripts/test-python.mjs --skip-if-missing || { echo "✖ detection-pipeline Python tests failed — push aborted."; exit 1; }
+
+# Beads last: only sync tracker state for a push that is actually going out.
+run_beads_hook pre-push "$@" || exit $?
+
+echo "✓ pre-push checks passed."
+exit 0

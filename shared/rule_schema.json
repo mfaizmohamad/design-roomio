@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://roomio.local/schemas/rule.json",
+  "title": "Roomio Design-Suggestion Rule",
+  "description": "A single rule in the data-driven necessities/polish rulebook (Agent A, Feature 2). The engine evaluates each rule's trigger against the room on every scene change and surfaces a dismissible, advisory suggestion. Version 1.0.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["rule_id", "tier", "priority", "trigger", "message", "rationale", "genre_scope"],
+  "properties": {
+    "rule_id": { "type": "string", "description": "e.g. R4, G-anime-shelf" },
+    "tier": {
+      "enum": ["necessity", "polish"],
+      "description": "necessity = functional gap (ranks above all polish); polish = documented design principle"
+    },
+    "priority": { "type": "integer", "description": "ascending sort within a tier (1 = highest)" },
+    "trigger": {
+      "type": "object",
+      "description": "declarative condition interpreted by the engine",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "absent_role",
+            "role_without_role",
+            "role_count_between",
+            "count_role_below",
+            "absent_archetype",
+            "no_focal_point",
+            "all_seating_wall_hugged",
+            "density_over",
+            "color_overload"
+          ]
+        },
+        "role": { "type": "string", "description": "functional role (see suggestions/roles.ts)" },
+        "have": { "type": "string" },
+        "missing": { "type": "string" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "archetype_id": { "type": "string" },
+        "room_types": { "type": "array", "items": { "type": "string" } },
+        "threshold_cm": { "type": "number" },
+        "ratio": { "type": "number" },
+        "max_clusters": { "type": "number" }
+      }
+    },
+    "suggest_archetype": {
+      "type": "string",
+      "description": "id the one-tap Add drops (empty string = advisory only, no Add button)"
+    },
+    "message": { "type": "string", "description": "what's missing/off (card title)" },
+    "rationale": { "type": "string", "description": "one-line why-it-matters" },
+    "genre_scope": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "[\"all\"] for universal, or a list of genre_ids for genre-aware rules"
+    }
+  }
+}

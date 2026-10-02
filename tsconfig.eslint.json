@@ -1,0 +1,23 @@
+{
+  // Lint-only TypeScript project. It exists ONLY so typescript-eslint can build
+  // a type-aware program for `@typescript-eslint/no-floating-promises`, which
+  // cannot work on a file that belongs to no project.
+  //
+  // tsconfig.json deliberately stays `include: ["src"]` (widening it is
+  // roomio-zhs.2, and doing it here would silently change what `npm run build`
+  // compiles). So the lint program is a SEPARATE config: same compilerOptions,
+  // wider include, `noEmit` — nothing here ever reaches the build.
+  //
+  // `allowJs` is required or server/*.js and scripts/*.mjs land outside the
+  // program and no-floating-promises silently stops firing on them — which is
+  // exactly where floating promises live (async Express handlers, node scripts).
+  // `checkJs` stays off: this config must not start type-erroring plain JS.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true
+  },
+  "include": ["src", "shared/lib", "scripts", "server"],
+  "exclude": ["**/node_modules", "**/dist"]
+}

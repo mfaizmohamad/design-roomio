@@ -1,0 +1,54 @@
+{
+  "title": "Roomio Scene Contract (Agent A <-> Agent B)",
+  "version": "1.0",
+  "status": "PROPOSED — awaiting Agent A ack in source/roomio.txt",
+  "owner": "Agent B (camera-flythrough) proposes; Agent A (front-end) implements the publisher.",
+  "purpose": "The flythrough feature must render THE SAME live Three.js scene the front-end builds (real integration seam, unlike the standalone detection pipeline). Agent B never edits front-end source and never spins up a second renderer inside the app. Instead, Agent A exposes the live React-Three-Fiber scene/renderer through a tiny module-level 'scene bus', mirroring the EXISTING src/three/cameraBus.ts pattern (setViewCapturer/captureView). Agent B's engine then attaches non-destructively to that handle.",
+
+  "rendererSetup": {
+    "framework": "react-three-fiber",
+    "evidence": "package.json depends on @react-three/fiber ^8 + @react-three/drei ^9 + three ^0.169; the Canvas + camera + OrbitControls(makeDefault) live in src/three/RoomView.tsx.",
+    "worldUnits": "meters; room centered on its bounding-box center (src/three/coords.ts makeFrame). cm(design) -> m(world): w = (cm - bboxCenterCm)/100.",
+    "canvasGl": "Canvas is created with gl={{ antialias:true, preserveDrawingBuffer:true }} — preserveDrawingBuffer is already on, which canvas-record/WebCodecs frame capture needs. Good."
+  },
+
+  "requestToAgentA": {
+    "summary": "Please add a scene bus mirroring cameraBus.ts so Agent B can attach the flythrough to the live scene. Small, isolated lift; no change to existing behavior.",
+    "files": [
+      {
+        "path": "src/three/sceneBus.ts",
+        "what": "New module mirroring cameraBus.ts. Holds a module-level SceneHandle (initially null) with setSceneHandle(handle)/getSceneHandle(). No React, no coupling."
+      },
+      {
+        "path": "src/three/RoomView.tsx",
+        "what": "Add a tiny <SceneBridge/> component INSIDE the existing <Canvas> (next to <ViewCapturer/>). It calls useThree() to grab { scene, gl, camera, controls } and registers them via setSceneHandle on mount; clears on unmount. ~15 lines, no behavior change. Also expose getColliders() (below) built from the live store design."
+      }
+    ],
+    "alternativeIfPreferred": "If you'd rather Agent B own the bridge, expose RoomView's existing `children` slot as the documented mount point and Agent B will ship a <SceneBridge/> component you render there. Either way the handle shape below is the contract."
+  },
+
+  "sceneHandle": {
+    "description": "The object published via setSceneHandle and read by Agent B via getSceneHandle(). All optional methods degrade gracefully (Agent B null-checks).",
+    "fields": {
+      "scene": "THREE.Scene — the live scene graph. Agent B adds/removes its OWN objects (waypoint markers, spline line/tube, camera gizmo) under a single named group 'flythrough-overlay' and removes them on teardown. Agent B never mutates the room/furniture meshes.",
+      "renderer": "THREE.WebGLRenderer (R3F's `gl`). Used for frame-by-frame capture (renderer.domElement is the canvas; preserveDrawingBuffer is already enabled).",
+      "camera": "the live THREE.PerspectiveCamera (R3F default). Agent B does NOT hijack this; it creates its OWN recording PerspectiveCamera + a top-down director camera and renders the scene with whichever is active. Provided so Agent B can read aspect/fov defaults and restore the user's view on exit.",
+      "controls": "the drei OrbitControls instance (makeDefault). Agent B disables it while in walk/playback modes and re-enables on exit.",
+      "domElement": "renderer.domElement (the <canvas>). PointerLockControls (F1) and pointer raycasting (F3) bind here.",
+      "size": "{ width, height } in CSS px (or read from domElement) for aspect + capture resolution."
+    },
+    "methods": {
+      "getColliders()": "Returns the collision world for first-person walk (F1) + walk-record (F4), derived from the live store design so it tracks edits. Shape: { walls: Wall[]  (from geometry/walls.ts deriveWalls), furniture: OBB[]  ({cx,cz,w,d,rot} in cm, from each FurnitureItem), polygon: Vec2[] (corners, cm), wallThickness: number (cm), bounds: {minX,minZ,maxX,maxZ} (cm) }. Coordinates in DESIGN cm; Agent B converts with the same makeFrame math. If unavailable, Agent B falls back to wall-only collision from scene raycasting.",
+      "frame()": "Optional. Returns { cx, cz } (bbox center in cm) so Agent B can map design-cm <-> world-m identically to coords.ts. If absent, Agent B derives it from the polygon bounds in getColliders().",
+      "invalidate()": "Optional (R3F invalidate). Request a single render — used if the front-end runs frameloop='demand'.",
+      "setFrameloop(mode)": "Optional. 'always' | 'demand' | 'never'. Agent B sets 'never' during deterministic capture (F6) so R3F's loop doesn't fight the manual step loop, then restores 'always'. If absent, Agent B captures on top of the running loop (still deterministic because each frame is rendered explicitly before recorder.step())."
+    }
+  },
+
+  "isolationRules": [
+    "Agent B's runtime code lives only in /camera-flythrough; the only front-end touch is the read-only getSceneHandle() consumption + the bus/bridge Agent A adds.",
+    "Agent B adds scene objects only under a single 'flythrough-overlay' group and fully removes them on teardown — the room is left exactly as found.",
+    "Agent B creates its own cameras; it never repositions the user's OrbitControls camera except to restore it on exit.",
+    "Until the bus lands, Agent B develops + verifies against a faithful local harness in /camera-flythrough that implements THIS handle over a furnished room (same presets/collision/coords math), so the engine drops onto the real scene with zero API change."
+  ]
+}

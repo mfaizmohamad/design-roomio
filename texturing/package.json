@@ -1,0 +1,33 @@
+{
+  "name": "roomio-texturing",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Agent H — Roomio photo texture mapping: take a user's furniture photo, detect+crop its surface (reusing Agent B's detection), turn the crop into a seamless, de-lit tiling PBR material (albedo + roughness + normal), and apply it to the matching archetype's material slot with world-space tiling + user scale/rotation. UV guarantee: corpus is parametric R3F primitives (auto-UV'd) + triplanar safety net. Suggestion-with-confirm (preview/accept/revert). Drop-in R3F lib + standalone demo harness; no edits to A/B/C/E/G source.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.114.0",
+    "@react-three/fiber": "^8.17.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.169.0",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.0",
+    "@types/three": "^0.169.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "puppeteer-core": "^23.11.1",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.9"
+  }
+}

@@ -1,0 +1,50 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+#app { position: fixed; inset: 0; }
+canvas { display: block; }
+
+#hud {
+  position: fixed; top: 12px; left: 12px; right: 12px;
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  z-index: 10; pointer-events: none;
+}
+#hud .group { display: flex; gap: 6px; pointer-events: auto; background: rgba(20,22,26,0.78);
+  backdrop-filter: blur(6px); padding: 7px 9px; border-radius: 10px; align-items: center; }
+#hud button {
+  border: 1px solid rgba(255,255,255,0.16); background: #2b2f36; color: #e9eaec;
+  padding: 7px 11px; border-radius: 7px; font-size: 13px; cursor: pointer; line-height: 1;
+}
+#hud button:hover { background: #363b44; }
+#hud button.active { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+#hud button:disabled { opacity: 0.4; cursor: default; }
+#hud .label { color: #aab; font-size: 12px; padding: 0 4px; }
+#hud input[type=range] { width: 130px; }
+
+#banner {
+  position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+  background: rgba(20,22,26,0.82); color: #e9eaec; padding: 9px 16px; border-radius: 9px;
+  font-size: 13px; z-index: 10; max-width: 90vw; text-align: center; pointer-events: none;
+}
+#banner b { color: #8ab4ff; }
+
+#transport {
+  position: fixed; bottom: 64px; left: 50%; transform: translateX(-50%);
+  display: none; gap: 10px; align-items: center; z-index: 10;
+  background: rgba(20,22,26,0.82); backdrop-filter: blur(6px);
+  padding: 8px 14px; border-radius: 10px; color: #e9eaec; font-size: 13px;
+}
+#transport.show { display: flex; }
+#transport button { border: 1px solid rgba(255,255,255,0.16); background: #2b2f36; color: #e9eaec;
+  padding: 6px 12px; border-radius: 7px; cursor: pointer; min-width: 70px; }
+#transport button:hover { background: #363b44; }
+#transport input[type=range] { width: 280px; accent-color: #3b82f6; }
+#transport .time { font-variant-numeric: tabular-nums; color: #aab; min-width: 78px; text-align: center; }
+#transport label { color: #aab; display: flex; align-items: center; gap: 4px; }
+#transport input[type=number] { width: 52px; }
+
+#toast {
+  position: fixed; top: 64px; left: 50%; transform: translateX(-50%);
+  background: rgba(16,185,129,0.92); color: #04221a; padding: 8px 14px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; z-index: 20; opacity: 0; transition: opacity .25s;
+}
+#toast.show { opacity: 1; }

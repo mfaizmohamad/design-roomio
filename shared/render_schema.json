@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://roomio/shared/render_schema.json",
+  "title": "Roomio Realistic Rendering Contract",
+  "version": "1.0",
+  "description": "Owned by Agent G (Realistic Rendering). Describes the 'look' layer that sits ON TOP of Agent E's lighting: PBR material tuning, image-based lighting (IBL), filmic tone mapping, post-processing (ambient occlusion + bloom), and an optional static-camera path-traced 'hero' still. World units are METERS (matches src/three/coords.ts). Renderer is React-Three-Fiber (three ^0.169, fiber ^8, drei ^9). SEAM WITH E: E owns the LIGHTS (hemisphere/ambient fill, per-room task/accent, the directional sun + shadow config). G owns how they LOOK. The app's <Canvas shadows flat> stays unchanged: `shadows` (PCFSoftShadowMap) is E's; `flat` (THREE.NoToneMapping) is deliberately KEPT so G's post-processing EffectComposer owns ACESFilmic tone mapping + the sRGB output conversion (avoids double tone-mapping). G's layer mounts entirely as <Canvas> CHILDREN (IBL via scene.environment + an EffectComposer) — NO Canvas-prop changes. This contract is ADDITIVE and forward-compatible: consumers must ignore unknown fields. A scene with no RenderSettings renders with G's built-in defaults (equivalent to the 'high' preset).",
+
+  "type": "object",
+  "required": ["version", "quality"],
+  "additionalProperties": true,
+  "properties": {
+    "version": { "const": "1.0" },
+
+    "quality": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "default": "high",
+      "description": "Performance/quality preset. 'high' = full stack (IBL + AO + bloom + multisampling). 'medium' = bloom + IBL, lighter AO. 'low' = drops the GPU-heavy post passes (AO off, bloom optional/cheap) so low-end devices hold framerate; IBL + tone mapping stay (cheap + the biggest realism lever). The toggle MUST keep low-end smooth."
+    },
+
+    "toneMapping": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Filmic tone mapping, applied as the LAST effect in G's EffectComposer (renderer itself stays NoToneMapping via the Canvas `flat` prop). Squashes HDR into a photographic curve; without it the scene clips and looks flat/CG.",
+      "properties": {
+        "mode": { "type": "string", "enum": ["ACESFilmic", "AgX", "Reinhard", "None"], "default": "ACESFilmic", "description": "ACESFilmic is the default cinematic look." },
+        "exposure": { "type": "number", "default": 1.0, "minimum": 0, "description": "Exposure / middle-grey scale applied before the curve. THIS is G's compensation knob: ACESFilmic darkens midtones vs the old NoToneMapping look, so exposure is tuned UP so E's existing (legacy-unit) light intensities still read correctly. Co-tuned with E; final value recorded in shared/LEARNINGS.md." }
+      }
+    },
+
+    "ibl": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Image-based lighting: an environment map drives soft ambient bounce + real reflections for all PBR materials (set as scene.environment via PMREMGenerator). Does NOT replace E's hemisphere/ambient fill — it complements it; envMapIntensity is kept modest to avoid double-ambient blowout under tone mapping.",
+      "properties": {
+        "source": { "type": "string", "default": "procedural-room", "description": "IBL source. 'procedural-room' = a synthetic neutral-interior environment built in-engine (drei <Environment> with Lightformers — NO external/CDN file, works offline/headless/in-app). A '<name>.hdr' path may be supplied later to load a real HDR. Background is NOT replaced (E/A own <color background>)." },
+        "intensity": { "type": "number", "default": 0.55, "minimum": 0, "description": "scene.environmentIntensity (and per-material envMapIntensity baseline). Kept modest because E already provides a hemisphere+ambient fill; this adds reflections + subtle bounce, not a second full ambient." }
+      }
+    },
+
+    "materials": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "PBR material policy. G upgrades the look of existing MeshStandardMaterials at runtime (a scene.traverse in the drop-in rig) so no edits to A's source are required: applies the IBL envMapIntensity, sensible default roughness/metalness where unset, and emissive on light-fixture meshes. A can also author roughness/metalness/clearcoat directly on archetypes (REQUEST -> AGENT-A).",
+      "properties": {
+        "defaultRoughness": { "type": "number", "default": 0.7, "minimum": 0, "maximum": 1, "description": "Fallback roughness for matte surfaces (walls/upholstery) lacking an authored value." },
+        "defaultMetalness": { "type": "number", "default": 0.0, "minimum": 0, "maximum": 1, "description": "Fallback metalness (most interior surfaces are dielectric)." },
+        "envMapIntensity": { "type": "number", "default": 0.55, "description": "Per-material envMapIntensity baseline (usually == ibl.intensity)." }
+      }
+    },
+
+    "post": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Post-processing passes in G's EffectComposer (HDR HalfFloat buffer so bloom + tone mapping work in linear before the final sRGB conversion).",
+      "properties": {
+        "bloom": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "UnrealBloom-style glow on truly bright (emissive/HDR) areas — bulbs + bright windows. Tuned so only genuinely bright things glow, never the whole lit room (no haze).",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "threshold": { "type": "number", "default": 0.9, "minimum": 0, "description": "luminanceThreshold: only pixels brighter than this bloom. Emissive fixtures push above it via emissiveIntensity." },
+            "strength": { "type": "number", "default": 0.6, "minimum": 0, "description": "bloom intensity." },
+            "radius": { "type": "number", "default": 0.5, "minimum": 0, "maximum": 1, "description": "bloom spread." }
+          }
+        },
+        "ao": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Ambient occlusion — soft contact darkening in crevices/corners. Big perceived-realism gain. SSAO/GTAO post-pass (and/or baked aoMap on assets needing a uv2 set, coordinated with H/F).",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true, "description": "Off at 'low' quality." },
+            "type": { "type": "string", "enum": ["N8AO", "SSAO", "GTAO"], "default": "N8AO", "description": "N8AO gives a good quality/cost ratio in R3F." },
+            "intensity": { "type": "number", "default": 1.0, "minimum": 0 },
+            "radius": { "type": "number", "default": 0.5, "minimum": 0, "description": "AO sampling radius in world-ish units; scene-scale dependent (meters). Recorded in LEARNINGS.md." }
+          }
+        },
+        "multisampling": { "type": "integer", "default": 4, "minimum": 0, "description": "MSAA samples for the composer (0 at 'low'). Antialiasing for the post pipeline." }
+      }
+    },
+
+    "heroRender": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "OPTIONAL stretch: a NON-real-time, progressive path-traced 'beauty shot'. Runs ONLY while the camera is held static; the moment the camera moves it falls back to the rasterized real-time view. Never the interactive default. Pairs with C's image-export / showcase + B's frame capture. Uses three-gpu-pathtracer (a WebGL path tracer) — NOT a per-pixel real-time ray tracer.",
+      "properties": {
+        "enabled": { "type": "boolean", "default": false, "description": "Whether the hero-render UI/mode is available. Even when available, it is opt-in per shot." },
+        "samples": { "type": "integer", "default": 256, "minimum": 1, "description": "Target accumulated samples per pixel for a converged still." },
+        "bounces": { "type": "integer", "default": 5, "minimum": 1, "description": "Max ray bounces (global illumination depth)." }
+      }
+    }
+  }
+}

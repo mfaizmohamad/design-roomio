@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "roomio:detection_schema",
+  "title": "Roomio Furniture Detection — Result Contract",
+  "contract_version": "1.0",
+  "owner": "agent_b",
+  "consumed_by": "agent_a (front-end confirmation UI)",
+  "description": "Shape of the <id>.result.json files Agent B writes to shared/results/. This is a PUBLISHED API: Agent B will not change its shape without announcing in roomio.txt first and waiting for Agent A to acknowledge. Detection is suggestion-only — Agent A renders these as confirmable dropdowns; nothing is auto-added. Every proposal.archetype_id is guaranteed to be a valid id from shared/archetypes.json (uncertain items fall back to misc-box). additionalProperties is true everywhere so future additive fields never break Agent A's validation.",
+
+  "request_file": {
+    "description": "Agent A drops a room photo at shared/requests/<id>.<ext> (jpg/jpeg/png/webp). An optional sidecar shared/requests/<id>.request.json may carry {\"request_id\": \"<id>\", \"image_path\": \"shared/requests/<id>.jpg\"}; if absent, request_id is derived from the image filename stem. The watcher tolerates either.",
+    "example": { "request_id": "living-room-01", "image_path": "shared/requests/living-room-01.jpg" }
+  },
+
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["version", "request_id", "status", "proposals", "generated_by", "model"],
+  "properties": {
+    "version": { "const": "1.0", "description": "Contract version. Bumped only via a roomio.txt announcement + Agent A ack." },
+    "request_id": { "type": "string" },
+    "status": { "enum": ["ok", "error"], "description": "'error' still yields a valid file with proposals:[] and a human-readable error — never a crash on Agent A's side." },
+    "error": { "type": ["string", "null"], "description": "Present/non-null only when status='error'." },
+    "generated_by": { "const": "agent_b" },
+    "model": { "type": "string", "description": "Detector/classifier model used, e.g. 'qwen2.5vl:7b', 'moondream', or 'heuristic-fallback'." },
+    "image": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "path": { "type": "string" },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "timing_ms": { "type": "number", "minimum": 0 },
+    "proposals": {
+      "type": "array",
+      "description": "One entry per detected furniture region. May be empty (nothing detected / error).",
+      "items": { "$ref": "#/definitions/proposal" }
+    }
+  },
+
+  "definitions": {
+    "proposal": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["archetype_id", "display_label", "confidence", "color_hex", "color_name", "bbox"],
+      "properties": {
+        "archetype_id": { "type": "string", "description": "GUARANTEED to exist in shared/archetypes.json. 'misc-box' when uncertain." },
+        "display_label": { "type": "string", "description": "Human label for the archetype, e.g. '3-Seater Sofa'. Mirror of archetypes.json name." },
+        "category": { "type": "string", "description": "Archetype category id (sofa|bed|table|chair|storage|decor|misc)." },
+        "detected_label": { "type": "string", "description": "Raw coarse label from the detector before closed-set mapping, e.g. 'sofa', 'couch'. Informational only." },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1, "description": "Combined detector+classifier confidence in [0,1]. Low values typically map to misc-box." },
+        "color_hex": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+        "color_name": { "type": "string", "description": "Nearest named color, e.g. 'sage green'." },
+        "bbox": {
+          "type": "array",
+          "description": "Pixel [x, y, w, h], top-left origin, in the source image's coordinate space (see image.width/height). Normalize by dividing x,w by width and y,h by height.",
+          "items": { "type": "number" },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "version": "1.0",
+      "request_id": "living-room-01",
+      "status": "ok",
+      "error": null,
+      "generated_by": "agent_b",
+      "model": "qwen2.5vl:7b",
+      "image": { "path": "shared/requests/living-room-01.jpg", "width": 1280, "height": 853 },
+      "timing_ms": 4210,
+      "proposals": [
+        {
+          "archetype_id": "sofa-3",
+          "display_label": "3-Seater Sofa",
+          "category": "sofa",
+          "detected_label": "sofa",
+          "confidence": 0.82,
+          "color_hex": "#8a9a7b",
+          "color_name": "sage green",
+          "bbox": [120, 360, 540, 280]
+        },
+        {
+          "archetype_id": "misc-box",
+          "display_label": "Placeholder Box",
+          "category": "misc",
+          "detected_label": "unknown object",
+          "confidence": 0.21,
+          "color_hex": "#b7b2a8",
+          "color_name": "greige",
+          "bbox": [900, 500, 160, 140]
+        }
+      ]
+    }
+  ]
+}

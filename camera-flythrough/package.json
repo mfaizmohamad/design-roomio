@@ -1,0 +1,25 @@
+{
+  "name": "roomio-camera-flythrough",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Agent B work-stream 2: virtual camera + flythrough for Roomio. First-person walk, top-down director, Catmull-Rom waypoint paths, smooth playback, deterministic frame-by-frame MP4 export. Client-side Three.js; renders Agent A's live scene via the /shared/scene_contract.json bus, or a faithful local harness for dev. NOT NeRF.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "verify": "for s in walk director path playback capture download record; do node scripts/verify-$s.mjs || exit 1; done"
+  },
+  "dependencies": {
+    "canvas-record": "^4.1.0",
+    "three": "^0.169.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.169.0",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.9"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "roomio-multi-room",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Agent C work-stream: multi-room floor plan + architecturally-correct connectors for Roomio. A House WRAPS Agent A's single-room RoomDesign (room.interior) — it never replaces it. Typed rooms (incl. kitchen/bathroom with research-grounded essentials), the full connector taxonomy on shared walls (opening cut in BOTH rooms by reusing A's wall/opening logic, ported read-only), and dismissible adjacency suggestions (AC1-AC9). Everything optional: a single bedroom stays a complete valid design, and old single-room saves still load. Pure TS logic + vitest; coordinates via /shared + roomio.txt; never edits A/B source.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.9"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "WIZ03": {
+    "freshLoad": "WALL",
+    "afterGuest": "GUEST",
+    "guestFlag": null,
+    "returningBareUrl": "WALL",
+    "signInReachesWall": null,
+    "reproducedBefore": true,
+    "fixed": false
+  },
+  "WIZ04": {
+    "rowsInitial": 1,
+    "nativeConfirm": false,
+    "confirmAppeared": false,
+    "rowsAfterClick": 0,
+    "rowsAfterCancel": null,
+    "rowsAfterConfirm": null,
+    "undoOffered": false,
+    "rowsAfterUndo": null,
+    "reproducedBefore": true,
+    "fixed": false
+  },
+  "CODE16": {
+    "inEditor": true,
+    "beforeUnloadProtected": false,
+    "homeConfirm": false,
+    "nativeConfirm": false,
+    "stayedAfterCancel": null,
+    "leftAfterConfirm": true,
+    "reproducedBefore": true,
+    "fixed": false
+  }
+}

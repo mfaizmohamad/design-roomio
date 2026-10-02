@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://roomio.local/shared/camera_path_schema.json",
+  "title": "Roomio Camera Path",
+  "description": "The hand-off artifact between the flythrough authoring stage (waypoints or recorded walk) and the playback/record stage. An ordered list of control points the camera flies through, plus per-point look-at + dwell and global timing/fps. Saved/loaded as JSON so a path is reusable and shareable. Published by Agent B (camera-flythrough); the front-end may also save/load it alongside a RoomDesign.",
+  "type": "object",
+  "version": "1.0",
+  "required": ["version", "coordinateSpace", "fps", "duration", "controlPoints"],
+  "additionalProperties": true,
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Schema version. Additive fields only within 1.x; breaking changes bump the major and are announced in roomio.txt before landing."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human label for the path, e.g. 'Entry walkthrough'."
+    },
+    "designId": {
+      "type": ["string", "null"],
+      "description": "Optional id of the RoomDesign this path was authored against. A path is most meaningful replayed in the scene it was drawn in; null = not bound to a specific design."
+    },
+    "coordinateSpace": {
+      "type": "string",
+      "enum": ["world-meters"],
+      "description": "All position/lookAt vectors are in Three.js scene units: METERS, with the origin at the room's bounding-box center (matching src/three/coords.ts makeFrame: worldX = (designCm.x - bboxCenterCm.x)/100). Stored in world space so the recording camera consumes the values directly with no conversion. The room only re-centers when its corner polygon (shape) changes, so a path stays valid as long as the room shape is unchanged."
+    },
+    "fps": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 120,
+      "default": 30,
+      "description": "Frames per second for deterministic frame-by-frame capture (F6). Playback preview (F5) is time-based and independent of this."
+    },
+    "duration": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Total travel time in SECONDS for one pass along the curve at constant arc-length speed (excludes dwell pauses). Total clip length = duration + sum(controlPoints[].dwell)."
+    },
+    "loop": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, the path is treated as a closed loop (CatmullRomCurve3 closed) and playback wraps t: 1 -> 0."
+    },
+    "eyeHeight": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "default": 1.6,
+      "description": "Default camera height in meters when a control point omits an explicit y (e.g. points authored by clicking the floor in the top-down view). Recorded-walk points carry their own y."
+    },
+    "lookAheadEps": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 0.5,
+      "default": 0.02,
+      "description": "Fraction of the curve to look ahead for smooth turning when a control point has no explicit lookAt: lookTarget = curve.getPointAt(min(t + lookAheadEps, 1)). Fewer control points + a small look-ahead = the camera anticipates bends instead of snapping."
+    },
+    "fov": {
+      "type": "number",
+      "minimum": 10,
+      "maximum": 120,
+      "default": 60,
+      "description": "Vertical field of view (degrees) of the recording camera during playback/capture."
+    },
+    "controlPoints": {
+      "type": "array",
+      "minItems": 2,
+      "description": "Ordered waypoints the Catmull-Rom curve passes THROUGH (interpolating spline, not Bezier). Authored by dropping/dragging waypoints (F3) or by decimating a recorded walk (F4). Order defines travel direction.",
+      "items": {
+        "type": "object",
+        "required": ["position"],
+        "additionalProperties": true,
+        "properties": {
+          "position": {
+            "type": "array",
+            "items": { "type": "number" },
+            "minItems": 3,
+            "maxItems": 3,
+            "description": "[x, y, z] camera position in world meters. y is eye height (defaults to eyeHeight when authored on the floor plane)."
+          },
+          "lookAt": {
+            "type": ["array", "null"],
+            "items": { "type": "number" },
+            "minItems": 3,
+            "maxItems": 3,
+            "description": "Optional explicit [x, y, z] world-meter target the camera aims at while passing this point. null/absent => use curve look-ahead (lookAheadEps)."
+          },
+          "dwell": {
+            "type": "number",
+            "minimum": 0,
+            "default": 0,
+            "description": "Seconds to pause (hold position, optionally easing the look-at) at this control point during playback. Adds to total clip length beyond `duration`."
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "version": "1.0",
+      "name": "Living-room entry walkthrough",
+      "designId": null,
+      "coordinateSpace": "world-meters",
+      "fps": 30,
+      "duration": 8,
+      "loop": false,
+      "eyeHeight": 1.6,
+      "lookAheadEps": 0.02,
+      "fov": 60,
+      "controlPoints": [
+        { "position": [-2.4, 1.6, 1.8], "lookAt": null, "dwell": 0 },
+        { "position": [-0.6, 1.6, 0.4], "lookAt": [1.2, 1.0, -1.0], "dwell": 0.5 },
+        { "position": [1.1, 1.6, -0.6], "lookAt": null, "dwell": 0 },
+        { "position": [2.0, 1.6, -1.6], "lookAt": [0, 0.8, 0], "dwell": 0 }
+      ]
+    }
+  ]
+}

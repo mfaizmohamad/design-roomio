@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://roomio/shared/lighting_schema.json",
+  "title": "Roomio Lighting & Time-of-Day Contract",
+  "version": "1.0",
+  "description": "Owned by Agent E (Lighting). Describes the lighting state for a Roomio scene: per-room layered lights (ambient/task/accent), the directional sun, and the time-of-day + north controls. World units are METERS (matches src/three/coords.ts). Renderer is React-Three-Fiber (three ^0.169, fiber ^8, drei ^9): <Canvas shadows> => PCFSoftShadowMap; <Canvas flat> => NoToneMapping; legacy (non-physical) light units, so intensities are tuned to that renderer, NOT physically-based watts. This contract is ADDITIVE and forward-compatible: consumers must ignore unknown fields. A scene with no LightingState renders with E's built-in defaults (never a dark box).",
+
+  "type": "object",
+  "required": ["version", "timeOfDay", "northOffsetDeg", "barVisible", "northVisible", "sun", "rooms"],
+  "additionalProperties": true,
+  "properties": {
+    "version": { "const": "1.0" },
+
+    "timeOfDay": {
+      "type": "number", "minimum": 0, "maximum": 1,
+      "description": "0..1 across the day. 0 = dawn (sun on east horizon), 0.5 = noon (sun peak), 1 = dusk (sun on west horizon). Drives sun elevation + azimuth + warmth/intensity. Default 0.55 (pleasant early afternoon)."
+    },
+    "northOffsetDeg": {
+      "type": "number",
+      "description": "North indicator rotation in degrees, added to the sun azimuth. Rotating swings where light comes from; +180 (or the 'reverse' control) flips it to the opposite side. Default 0."
+    },
+    "barVisible": {
+      "type": "boolean",
+      "description": "Whether the time-of-day bar UI is shown. Toggles INDEPENDENTLY of northVisible. Hiding it does not change the scene's current lighting (timeOfDay is retained)."
+    },
+    "northVisible": {
+      "type": "boolean",
+      "description": "Whether the north/compass indicator UI is shown. Toggles independently of barVisible."
+    },
+    "lightMode": {
+      "type": "boolean",
+      "default": false,
+      "description": "Presentation / lighting-focus mode. When TRUE: all furniture is locked (no drag/rotate/resize) and the furniture editing hints are hidden, so the user can play with light without disturbing the layout. When FALSE (default): furniture is in its normal editable state. A single GLOBAL flag — furniture's own `locked` flags are never mutated, so toggling off returns every piece to its prior state. See contracts.AGENT_A_lightmode."
+    },
+
+    "sun": {
+      "type": "object",
+      "required": ["enabled", "maxElevationDeg"],
+      "additionalProperties": true,
+      "description": "The single directional 'sun'. One THREE.DirectionalLight aimed by position->target (NOT rotation); it is the PRIMARY (ideally only) shadow caster for performance.",
+      "properties": {
+        "enabled": { "type": "boolean", "description": "When false, no sun/shadows; rooms still lit by their own lights + ambient fill." },
+        "maxElevationDeg": { "type": "number", "default": 60, "description": "Peak sun elevation at noon (timeOfDay=0.5). Lower = longer shadows year-round feel." },
+        "warmthShift": { "type": "boolean", "default": true, "description": "When true, sun color warms (toward amber) and dims as elevation drops toward dawn/dusk; neutral-white near noon." },
+        "intensityScale": { "type": "number", "default": 1.0, "description": "Multiplier on the time-derived sun intensity (renderer-tuned base ~1.35 at noon)." },
+        "domeRadiusM": { "type": "number", "default": 30, "description": "Distance (meters) of the sun position from house center along the dome. Must sit outside the house; shadow frustum is sized to the house, not this radius." }
+      }
+    },
+
+    "shadow": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Sun shadow tuning. Scene-scale dependent (meters). Tuned values live in /shared/LEARNINGS.md. The orthographic frustum half-extent + far MUST enclose the whole house or shadows clip.",
+      "properties": {
+        "mapSize": { "type": "integer", "default": 2048, "description": "Shadow map resolution (px). 2048 baseline; 4096 for large houses." },
+        "bias": { "type": "number", "default": -0.0004, "description": "Small negative value to fight shadow acne; too large -> peter-panning." },
+        "normalBias": { "type": "number", "default": 0.02, "description": "Preferred for curved/angled surfaces; reduces acne without peter-panning." },
+        "halfExtentM": { "type": "number", "description": "Orthographic frustum half-extent (meters) = max(houseHalfWidth, houseHalfDepth) + margin. Auto-derived from house bounds when omitted." },
+        "type": { "type": "string", "enum": ["PCFSoft", "PCF", "VSM", "Basic"], "default": "PCFSoft" }
+      }
+    },
+
+    "rooms": {
+      "type": "object",
+      "description": "Map of roomId -> per-room lighting. roomId matches RoomDesign.id (single room) or House room_id (multi-room). A room with no entry gets E's default ceiling+ambient on first render.",
+      "additionalProperties": { "$ref": "#/definitions/RoomLighting" }
+    }
+  },
+
+  "definitions": {
+    "RoomLighting": {
+      "type": "object",
+      "required": ["lights"],
+      "additionalProperties": true,
+      "properties": {
+        "lights": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Light" },
+          "description": "Layered light objects for this room. A default room ships with at least an ambient fill + a task ceiling light (P1). 'Layered' (passes A's rule) = >=1 task AND an ambient/hemisphere fill (>=2 layers)."
+        }
+      }
+    },
+
+    "Light": {
+      "type": "object",
+      "required": ["id", "type", "layer", "color", "intensity"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "description": "Stable unique id within the room (e.g. 'ceil_1', 'amb_fill', 'accent_wash_1')." },
+        "type": {
+          "type": "string",
+          "enum": ["hemisphere", "ambient", "ceiling", "pendant", "desk", "floor", "sconce", "wall_wash", "strip", "spot", "point"],
+          "description": "Light primitive / fixture kind. hemisphere|ambient = ambient layer; ceiling|pendant|desk|floor = task; sconce|wall_wash|strip|spot|point = accent (context-dependent — 'layer' field is authoritative)."
+        },
+        "layer": {
+          "type": "string",
+          "enum": ["ambient", "task", "accent"],
+          "description": "Which of the documented three layers this light belongs to. AUTHORITATIVE for A's layered-lighting rule."
+        },
+        "color": { "type": "string", "pattern": "^#([0-9a-fA-F]{6})$", "description": "Hex color the light emits (already includes warmth tint)." },
+        "colorTempK": { "type": "number", "minimum": 1500, "maximum": 12000, "description": "Optional color temperature in Kelvin (e.g. 2700 warm, 4000 neutral, 5000 cool). When present, 'color' should be the RGB derived from it." },
+        "warmth": { "type": "string", "enum": ["warm", "neutral", "cool"], "description": "Convenience preset (warm~2700K, neutral~4000K, cool~5000K). UI toggle." },
+        "intensity": { "type": "number", "minimum": 0, "description": "Renderer-tuned intensity (NOT physical watts). See LEARNINGS.md for working ranges." },
+        "castShadow": { "type": "boolean", "default": false, "description": "Whether this room light casts shadows. Capped: keep few; the sun is the primary caster (performance)." },
+        "isDefault": { "type": "boolean", "default": false, "description": "True for auto-added defaults (so the UI can label / reset them); user edits clear or keep this." },
+        "enabled": { "type": "boolean", "default": true, "description": "Soft on/off without deleting the light." },
+        "pos": {
+          "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3,
+          "description": "World-meter position [x,y,z]. For ambient/hemisphere lights, position is ignored. Ceiling default sits near wallHeight."
+        },
+        "target": {
+          "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3,
+          "description": "World-meter aim point for directional/spot/wall_wash lights (optional)."
+        },
+        "groundColor": { "type": "string", "pattern": "^#([0-9a-fA-F]{6})$", "description": "HemisphereLight only: ground tint color." },
+        "fixtureModel": {
+          "type": "string",
+          "description": "Optional visible fixture mesh to render for this light (swap a bare light for a pendant/floor-lamp/sconce). Render detail; does not affect the light contract."
+        }
+      }
+    }
+  },
+
+  "contracts": {
+    "_comment": "Cross-agent agreements (informational; not JSON-Schema-validated).",
+    "AGENT_A_layered_rule": "A's suggestion engine derives the 'light' role from FURNITURE with model==='lamp' (rules R1 'No light source', R-onlyone 'Only one light source'). Agent E proposes the engine ALSO treat a room as lit+layered when its LightingState satisfies E's predicate `roomLightingSatisfaction(roomId)` => { hasLight: bool (>=1 enabled non-shadow-only light), isLayered: bool (>=1 task AND an ambient fill) }. E exports this pure helper from /lighting/src/contract.ts. A's engine can import/mirror it so a room E lights passes R1 + the single-overhead rule out of the box. Pending A ack.",
+    "AGENT_A_lightmode": "Light Mode (lightMode flag). A reads it from E's lighting store and: (1) in FurnitureEditor, treat a piece as non-interactive when `furnitureLocked(item, lightMode)` (= lightMode || item.locked) — guard the move/rotate/resize handlers and hide the rotate/resize knobs; (2) in Furnish, render the bottom editing hint only when `showEditingHints(lightMode)` (= !lightMode). Both pure helpers are exported from /lighting/src/contract.ts. The Light Mode toggle button itself lives in E's <LightingControls> overlay. Exact diff in /lighting/INTEGRATION.md.",
+    "AGENT_B_lightmode": "Flythrough should honor the same presentation flag. Proposal: entering the flythrough (first-person walk / playback / record) implies lightMode=true (lock furniture + hide editing hints) for a clean recording, and restores it on exit; OR flythrough simply checks lightMode so editing and walking never fight over the same pointer. The shared 'presentation lock' = lightMode. No camera_path/scene_contract schema change.",
+    "AGENT_C_multiroom": "Per-room lights keyed by House room_id; E reads rooms[].footprint {x,z,rotation,w,l} (cm) to place each room's ceiling light at the room center and to size the sun's shadow frustum to the whole house bounds. E needs window openings (kind:'window', sill, wallId, t) per room to aim accent/sun shafts; available via RoomDesign.openings (A) and C's worldWalls/openingsForRoom helpers.",
+    "AGENT_B_camera": "Camera/flythrough records whatever lighting E sets; LightingState is part of the scene, no schema change to camera_path/scene_contract v1.0. If B wants deterministic lighting per recorded frame, read timeOfDay from LightingState (sun position is a pure function of timeOfDay + northOffsetDeg)."
+  }
+}

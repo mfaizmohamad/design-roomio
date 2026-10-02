@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "roomio/texture_schema",
+  "title": "Roomio Photo-Texture Mapping contract (Agent H)",
+  "version": "1.0",
+  "description": "Contract for turning a user's furniture photo into a tiling PBR material and applying it to a Roomio archetype's material slot. PUBLISHED API: Agent H will not change its shape without announcing in roomio.txt and waiting for acks from A (FurnitureItem owner), C (persistence), and G (rendering). Three decoupled stages: T1 detect+crop (REUSES Agent B's detection; H does NOT rebuild object detection), T2 texture-ify (seamless tile + de-light + derive albedo/roughness/normal), T3 apply to a material slot with world-space tiling. IMAGE BYTES ARE NEVER EMBEDDED IN A DESIGN: the design stores REFERENCES (content-hash asset ids) and the bytes live in a content-addressed asset store (local-first, keyed `roomio.asset.<sha256>`, behind Agent C's StorageAdapter shape).",
+  "definitions": {
+    "AssetRef": {
+      "description": "A reference to image bytes stored OUT-OF-BAND in the content-addressed asset store (key = `roomio.asset.<sha256>`). NEVER the bytes themselves. Content-hash so identical photos dedupe.",
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "ColorSpace": {
+      "description": "Texture color space. albedo/base-color maps are 'srgb'; data maps (roughness/normal/metalness) are 'linear'.",
+      "enum": ["srgb", "linear"]
+    },
+    "Slot": {
+      "description": "Which material ROLE on the target archetype receives the texture. Roomio's parametric builders (src/three/Furniture3D.tsx) compose primitive meshes with NO named slots today; H defines this taxonomy. 'body' = the PRIMARY surface that uses the raw item color (sofa fabric body, table/desk top, cabinet body, chair seat, bed duvet). Apply to 'body' by default; other roles are opt-in once A tags meshes (see roomio.txt REQUEST -> AGENT-A).",
+      "enum": ["body", "cushion", "surface", "wood", "metal", "glass", "accent"]
+    },
+    "PbrMaps": {
+      "description": "The three derived PBR maps. albedo is sRGB (de-lit base color); roughness + normal are LINEAR data maps. metalness optional (omit for dielectric fabric/wood). Each value is an AssetRef — never inline bytes.",
+      "type": "object",
+      "required": ["albedo", "roughness", "normal"],
+      "properties": {
+        "albedo": { "$ref": "#/definitions/AssetRef" },
+        "roughness": { "$ref": "#/definitions/AssetRef" },
+        "normal": { "$ref": "#/definitions/AssetRef" },
+        "metalness": { "$ref": "#/definitions/AssetRef" }
+      }
+    },
+    "Tiling": {
+      "description": "World-space tiling controls. repeat_cm = how many real-world centimeters ONE tile spans (mirrors the floor's areaCm contract in src/three/textures.ts: at apply time `texture.repeat` is derived per-mesh as worldDimCm / repeat_cm, so pattern density is physically consistent across differently-sized meshes). rotation_deg rotates the texture about its center. These are the two user-facing scale controls the brief requires.",
+      "type": "object",
+      "required": ["repeat_cm", "rotation_deg"],
+      "properties": {
+        "repeat_cm": { "type": "number", "minimum": 1, "default": 40 },
+        "rotation_deg": { "type": "number", "default": 0 }
+      }
+    },
+    "TextureJob": {
+      "description": "T1 input: a detect+crop job. source_photo + bbox come from Agent B's detection result (shared/detection_schema.json). H crops CLIENT-SIDE from bbox (pixel [x,y,w,h] in the result's image.width/height downscaled space) + the user's original photo. No edit to B's pipeline.",
+      "type": "object",
+      "required": ["target_archetype_id"],
+      "properties": {
+        "source_photo": { "description": "AssetRef to the original uploaded photo (optional; may be transient).", "$ref": "#/definitions/AssetRef" },
+        "bbox": { "description": "From Agent B: pixel [x, y, w, h] in the detection result's image.width/height (downscaled) space.", "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4 },
+        "target_archetype_id": { "description": "A real catalog id from shared/archetypes.json (e.g. 'sofa-3', 'table-coffee'). NOT the brief's placeholder 'sofa_3_seater'.", "type": "string" },
+        "target_slot": { "$ref": "#/definitions/Slot", "default": "body" }
+      }
+    },
+    "AppliedTexture": {
+      "description": "The PERSISTED slice: this is the ADDITIVE optional `texture` field on Agent A's FurnitureItem (src/types.ts). Round-trips verbatim through Agent C's persistence (coerce passes `interior` through; updateFurniture spread-merges; migrate only allowlists TOP-LEVEL envelope keys). Small by construction — references only, no bytes.",
+      "type": "object",
+      "required": ["asset_id", "slot", "maps", "tiling"],
+      "properties": {
+        "asset_id": { "description": "Content hash of the source crop — stable identity for dedup + persistence.", "$ref": "#/definitions/AssetRef" },
+        "slot": { "$ref": "#/definitions/Slot" },
+        "maps": { "$ref": "#/definitions/PbrMaps" },
+        "tiling": { "$ref": "#/definitions/Tiling" },
+        "color_space": {
+          "type": "object",
+          "default": { "albedo": "srgb", "roughness": "linear", "normal": "linear" },
+          "properties": {
+            "albedo": { "$ref": "#/definitions/ColorSpace" },
+            "roughness": { "$ref": "#/definitions/ColorSpace" },
+            "normal": { "$ref": "#/definitions/ColorSpace" }
+          }
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "kind": { "enum": ["photo", "procedural"], "default": "photo" },
+            "archetype_id": { "type": "string" },
+            "detected_at": { "type": "number" }
+          }
+        },
+        "status": {
+          "description": "Pipeline/UV quality status. ok = applied cleanly; needs_uv = had to fall back to triplanar; low_quality = crop was poor (folds/shadows).",
+          "enum": ["ok", "needs_uv", "low_quality"],
+          "default": "ok"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "description_examples": "A texture_job describes the T1 input; an applied_texture is what lands (additively) on a FurnitureItem and persists.",
+  "properties": {
+    "texture_job": { "$ref": "#/definitions/TextureJob" },
+    "applied_texture": { "$ref": "#/definitions/AppliedTexture" }
+  },
+  "examples": [
+    {
+      "texture_job": {
+        "bbox": [587, 409, 693, 450],
+        "target_archetype_id": "sofa-3",
+        "target_slot": "body"
+      }
+    },
+    {
+      "applied_texture": {
+        "asset_id": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "slot": "body",
+        "maps": {
+          "albedo": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "roughness": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "normal": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "tiling": { "repeat_cm": 40, "rotation_deg": 0 },
+        "color_space": { "albedo": "srgb", "roughness": "linear", "normal": "linear" },
+        "source": { "kind": "photo", "archetype_id": "sofa-3" },
+        "status": "ok"
+      }
+    }
+  ]
+}

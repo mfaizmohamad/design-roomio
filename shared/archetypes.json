@@ -1,0 +1,669 @@
+{
+  "version": "1.0",
+  "source": "Mirror of src/data/archetypes.ts (Agent A owns the corpus; auto-generated from archetypes.catalog.json). Agent B mirrors it here as the single source of truth for valid archetype_id values. Agent B NEVER emits an archetype_id absent from this file — it falls back to fallback_id.",
+  "fallback_id": "misc-box",
+  "categories": [
+    {
+      "id": "sofa",
+      "label": "Sofas"
+    },
+    {
+      "id": "bed",
+      "label": "Beds"
+    },
+    {
+      "id": "table",
+      "label": "Tables"
+    },
+    {
+      "id": "chair",
+      "label": "Chairs"
+    },
+    {
+      "id": "storage",
+      "label": "Storage"
+    },
+    {
+      "id": "kitchen",
+      "label": "Kitchen"
+    },
+    {
+      "id": "bathroom",
+      "label": "Bathroom"
+    },
+    {
+      "id": "decor",
+      "label": "Decor"
+    },
+    {
+      "id": "misc",
+      "label": "Other"
+    }
+  ],
+  "archetypes": [
+    {
+      "id": "sofa-3",
+      "category": "sofa",
+      "name": "3-Seater Sofa",
+      "default_color_hex": "#7d8a99"
+    },
+    {
+      "id": "sofa-2",
+      "category": "sofa",
+      "name": "2-Seater Sofa",
+      "default_color_hex": "#8a94a1"
+    },
+    {
+      "id": "sofa-love",
+      "category": "sofa",
+      "name": "Loveseat",
+      "default_color_hex": "#9c8f86"
+    },
+    {
+      "id": "sofa-sectional",
+      "category": "sofa",
+      "name": "L-Shaped Sectional",
+      "default_color_hex": "#6f7d72"
+    },
+    {
+      "id": "sofa-u",
+      "category": "sofa",
+      "name": "U-Shaped Sectional",
+      "default_color_hex": "#6b7a86"
+    },
+    {
+      "id": "sofa-chesterfield",
+      "category": "sofa",
+      "name": "Chesterfield Sofa",
+      "default_color_hex": "#6b4a35"
+    },
+    {
+      "id": "sofa-midcentury",
+      "category": "sofa",
+      "name": "Mid-Century Sofa",
+      "default_color_hex": "#b58a52"
+    },
+    {
+      "id": "sofa-sleeper",
+      "category": "sofa",
+      "name": "Sleeper Sofa",
+      "default_color_hex": "#8f8478"
+    },
+    {
+      "id": "sofa-daybed",
+      "category": "sofa",
+      "name": "Daybed",
+      "default_color_hex": "#a89880"
+    },
+    {
+      "id": "sofa-chaise",
+      "category": "sofa",
+      "name": "Chaise Lounge",
+      "default_color_hex": "#7e8a7f"
+    },
+    {
+      "id": "sofa-recliner",
+      "category": "sofa",
+      "name": "Recliner",
+      "default_color_hex": "#8a6f5e"
+    },
+    {
+      "id": "sofa-futon",
+      "category": "sofa",
+      "name": "Futon",
+      "default_color_hex": "#7a7068"
+    },
+    {
+      "id": "bed-single",
+      "category": "bed",
+      "name": "Single Bed",
+      "default_color_hex": "#cdbfa6"
+    },
+    {
+      "id": "bed-twin",
+      "category": "bed",
+      "name": "Twin Bed",
+      "default_color_hex": "#c9bca4"
+    },
+    {
+      "id": "bed-full",
+      "category": "bed",
+      "name": "Full / Double Bed",
+      "default_color_hex": "#c7b69c"
+    },
+    {
+      "id": "bed-queen",
+      "category": "bed",
+      "name": "Queen Bed",
+      "default_color_hex": "#c4b39a"
+    },
+    {
+      "id": "bed-king",
+      "category": "bed",
+      "name": "King Bed",
+      "default_color_hex": "#b9a489"
+    },
+    {
+      "id": "bed-cal-king",
+      "category": "bed",
+      "name": "California King",
+      "default_color_hex": "#bda88c"
+    },
+    {
+      "id": "bed-bunk",
+      "category": "bed",
+      "name": "Bunk Bed",
+      "default_color_hex": "#cabfa6"
+    },
+    {
+      "id": "bed-bunk-desk",
+      "category": "bed",
+      "name": "Bunk Bed with Desk",
+      "default_color_hex": "#c3b69e"
+    },
+    {
+      "id": "bed-platform",
+      "category": "bed",
+      "name": "Platform Bed",
+      "default_color_hex": "#b6a487"
+    },
+    {
+      "id": "bed-kids",
+      "category": "bed",
+      "name": "Kids Bed",
+      "default_color_hex": "#d2c5ac"
+    },
+    {
+      "id": "bed-toddler",
+      "category": "bed",
+      "name": "Toddler Bed",
+      "default_color_hex": "#d8cbb4"
+    },
+    {
+      "id": "bed-crib",
+      "category": "bed",
+      "name": "Crib",
+      "default_color_hex": "#d8cbb4"
+    },
+    {
+      "id": "table-coffee",
+      "category": "table",
+      "name": "Coffee Table",
+      "default_color_hex": "#8a5a36"
+    },
+    {
+      "id": "table-dining",
+      "category": "table",
+      "name": "Dining Table",
+      "default_color_hex": "#7a5230"
+    },
+    {
+      "id": "table-round",
+      "category": "table",
+      "name": "Round Dining Table",
+      "default_color_hex": "#7a5230"
+    },
+    {
+      "id": "table-oval",
+      "category": "table",
+      "name": "Oval Dining Table",
+      "default_color_hex": "#74502f"
+    },
+    {
+      "id": "table-console",
+      "category": "table",
+      "name": "Console Table",
+      "default_color_hex": "#86603c"
+    },
+    {
+      "id": "table-hall",
+      "category": "table",
+      "name": "Hall Table",
+      "default_color_hex": "#8c6a44"
+    },
+    {
+      "id": "table-side",
+      "category": "table",
+      "name": "Side Table",
+      "default_color_hex": "#9a6a40"
+    },
+    {
+      "id": "table-end",
+      "category": "table",
+      "name": "End Table",
+      "default_color_hex": "#90633d"
+    },
+    {
+      "id": "table-nesting",
+      "category": "table",
+      "name": "Nesting Tables",
+      "default_color_hex": "#9a6a40"
+    },
+    {
+      "id": "table-bar",
+      "category": "table",
+      "name": "Bar / Pub Table",
+      "default_color_hex": "#6e4a2c"
+    },
+    {
+      "id": "table-plant-stand",
+      "category": "table",
+      "name": "Plant Stand",
+      "default_color_hex": "#9a7a52"
+    },
+    {
+      "id": "table-vanity",
+      "category": "table",
+      "name": "Vanity / Dressing Table",
+      "default_color_hex": "#b09478"
+    },
+    {
+      "id": "desk-writing",
+      "category": "table",
+      "name": "Writing Desk",
+      "default_color_hex": "#9b7b4f"
+    },
+    {
+      "id": "desk-office",
+      "category": "table",
+      "name": "Office Desk",
+      "default_color_hex": "#8c6f48"
+    },
+    {
+      "id": "desk-l",
+      "category": "table",
+      "name": "L-Shaped Desk",
+      "default_color_hex": "#7f6643"
+    },
+    {
+      "id": "desk-corner",
+      "category": "table",
+      "name": "Corner Desk",
+      "default_color_hex": "#856a45"
+    },
+    {
+      "id": "desk-standing",
+      "category": "table",
+      "name": "Standing Desk",
+      "default_color_hex": "#7a7a7e"
+    },
+    {
+      "id": "chair-dining",
+      "category": "chair",
+      "name": "Dining Chair",
+      "default_color_hex": "#6b6f76"
+    },
+    {
+      "id": "chair-arm",
+      "category": "chair",
+      "name": "Armchair",
+      "default_color_hex": "#8f7d6b"
+    },
+    {
+      "id": "chair-accent",
+      "category": "chair",
+      "name": "Accent Chair",
+      "default_color_hex": "#9a6a72"
+    },
+    {
+      "id": "chair-lounge",
+      "category": "chair",
+      "name": "Lounge Chair",
+      "default_color_hex": "#7f8a7f"
+    },
+    {
+      "id": "chair-wingback",
+      "category": "chair",
+      "name": "Wingback Chair",
+      "default_color_hex": "#6c5560"
+    },
+    {
+      "id": "chair-papasan",
+      "category": "chair",
+      "name": "Papasan Chair",
+      "default_color_hex": "#a8865c"
+    },
+    {
+      "id": "chair-egg",
+      "category": "chair",
+      "name": "Hanging Egg Chair",
+      "default_color_hex": "#8a9488"
+    },
+    {
+      "id": "chair-rocking",
+      "category": "chair",
+      "name": "Rocking Chair",
+      "default_color_hex": "#8a6a44"
+    },
+    {
+      "id": "chair-folding",
+      "category": "chair",
+      "name": "Folding Chair",
+      "default_color_hex": "#5c6066"
+    },
+    {
+      "id": "chair-office",
+      "category": "chair",
+      "name": "Office Chair",
+      "default_color_hex": "#3b3f45"
+    },
+    {
+      "id": "chair-gaming",
+      "category": "chair",
+      "name": "Gaming Chair",
+      "default_color_hex": "#2f3340"
+    },
+    {
+      "id": "stool-bar",
+      "category": "chair",
+      "name": "Bar Stool",
+      "default_color_hex": "#5d6168"
+    },
+    {
+      "id": "stool-counter",
+      "category": "chair",
+      "name": "Counter Stool",
+      "default_color_hex": "#67635c"
+    },
+    {
+      "id": "stool-step",
+      "category": "chair",
+      "name": "Step Stool",
+      "default_color_hex": "#9a8466"
+    },
+    {
+      "id": "bench-dining",
+      "category": "chair",
+      "name": "Dining Bench",
+      "default_color_hex": "#8a6a44"
+    },
+    {
+      "id": "bench-entry",
+      "category": "chair",
+      "name": "Entryway Bench",
+      "default_color_hex": "#90765a"
+    },
+    {
+      "id": "ottoman-rect",
+      "category": "chair",
+      "name": "Ottoman",
+      "default_color_hex": "#9a8d80"
+    },
+    {
+      "id": "ottoman-pouf",
+      "category": "chair",
+      "name": "Round Pouf",
+      "default_color_hex": "#b08a6a"
+    },
+    {
+      "id": "ottoman-bean",
+      "category": "chair",
+      "name": "Bean Bag",
+      "default_color_hex": "#7d8a99"
+    },
+    {
+      "id": "storage-wardrobe",
+      "category": "storage",
+      "name": "Wardrobe",
+      "default_color_hex": "#b39873"
+    },
+    {
+      "id": "storage-armoire",
+      "category": "storage",
+      "name": "Armoire",
+      "default_color_hex": "#9c8160"
+    },
+    {
+      "id": "storage-dresser",
+      "category": "storage",
+      "name": "Dresser",
+      "default_color_hex": "#a98a63"
+    },
+    {
+      "id": "storage-chest",
+      "category": "storage",
+      "name": "Chest of Drawers",
+      "default_color_hex": "#a3855e"
+    },
+    {
+      "id": "storage-nightstand",
+      "category": "storage",
+      "name": "Nightstand",
+      "default_color_hex": "#ad9069"
+    },
+    {
+      "id": "storage-sideboard",
+      "category": "storage",
+      "name": "Sideboard",
+      "default_color_hex": "#9a7a52"
+    },
+    {
+      "id": "storage-shoe",
+      "category": "storage",
+      "name": "Shoe Cabinet",
+      "default_color_hex": "#b0936b"
+    },
+    {
+      "id": "storage-filing",
+      "category": "storage",
+      "name": "Filing Cabinet",
+      "default_color_hex": "#7d7a73"
+    },
+    {
+      "id": "storage-drinks-cabinet",
+      "category": "storage",
+      "name": "Drinks Cabinet",
+      "default_color_hex": "#7d5a3c"
+    },
+    {
+      "id": "storage-media",
+      "category": "storage",
+      "name": "Media Console",
+      "default_color_hex": "#7a6a58"
+    },
+    {
+      "id": "storage-tv",
+      "category": "storage",
+      "name": "TV Unit",
+      "default_color_hex": "#7a6a58"
+    },
+    {
+      "id": "storage-bookcase",
+      "category": "storage",
+      "name": "Bookcase",
+      "default_color_hex": "#9a7a52"
+    },
+    {
+      "id": "storage-shelving",
+      "category": "storage",
+      "name": "Shelving Unit",
+      "default_color_hex": "#8f7349"
+    },
+    {
+      "id": "storage-cube",
+      "category": "storage",
+      "name": "Cube Shelf",
+      "default_color_hex": "#b6b2aa"
+    },
+    {
+      "id": "storage-ladder",
+      "category": "storage",
+      "name": "Ladder Shelf",
+      "default_color_hex": "#9a7a52"
+    },
+    {
+      "id": "storage-wall-shelf",
+      "category": "storage",
+      "name": "Wall Shelf",
+      "default_color_hex": "#a3855e"
+    },
+    {
+      "id": "storage-barcart",
+      "category": "storage",
+      "name": "Bar Cart",
+      "default_color_hex": "#8a8a8a"
+    },
+    {
+      "id": "storage-trunk",
+      "category": "storage",
+      "name": "Blanket Box / Trunk",
+      "default_color_hex": "#9a7a52"
+    },
+    {
+      "id": "decor-rug",
+      "category": "decor",
+      "name": "Rug",
+      "default_color_hex": "#c08a6a"
+    },
+    {
+      "id": "decor-rug-large",
+      "category": "decor",
+      "name": "Large Rug",
+      "default_color_hex": "#bd8868"
+    },
+    {
+      "id": "decor-rug-runner",
+      "category": "decor",
+      "name": "Runner Rug",
+      "default_color_hex": "#b07a5a"
+    },
+    {
+      "id": "decor-rug-round",
+      "category": "decor",
+      "name": "Round Rug",
+      "default_color_hex": "#c79a72"
+    },
+    {
+      "id": "decor-lamp",
+      "category": "decor",
+      "name": "Floor Lamp",
+      "default_color_hex": "#cbb892"
+    },
+    {
+      "id": "decor-lamp-arc",
+      "category": "decor",
+      "name": "Arc Floor Lamp",
+      "default_color_hex": "#b8b39c"
+    },
+    {
+      "id": "decor-lamp-table",
+      "category": "decor",
+      "name": "Table Lamp",
+      "default_color_hex": "#d8c69a"
+    },
+    {
+      "id": "decor-plant",
+      "category": "decor",
+      "name": "Potted Plant",
+      "default_color_hex": "#3f7a4b"
+    },
+    {
+      "id": "decor-tree",
+      "category": "decor",
+      "name": "Potted Tree",
+      "default_color_hex": "#386b40"
+    },
+    {
+      "id": "decor-tv",
+      "category": "decor",
+      "name": "Flatscreen TV",
+      "default_color_hex": "#15171a"
+    },
+    {
+      "id": "decor-tv-large",
+      "category": "decor",
+      "name": "Large TV",
+      "default_color_hex": "#141518"
+    },
+    {
+      "id": "decor-mirror",
+      "category": "decor",
+      "name": "Wall / Floor Mirror",
+      "default_color_hex": "#caa86a"
+    },
+    {
+      "id": "misc-box",
+      "category": "misc",
+      "name": "Placeholder Box",
+      "default_color_hex": "#b7b2a8"
+    },
+    {
+      "id": "kitchen-counter",
+      "category": "kitchen",
+      "name": "Counter & Cabinets",
+      "default_color_hex": "#d9d5cd"
+    },
+    {
+      "id": "kitchen-island",
+      "category": "kitchen",
+      "name": "Kitchen Island",
+      "default_color_hex": "#cdbfa6"
+    },
+    {
+      "id": "kitchen-sink",
+      "category": "kitchen",
+      "name": "Kitchen Sink Base",
+      "default_color_hex": "#d6cdbd"
+    },
+    {
+      "id": "kitchen-stove",
+      "category": "kitchen",
+      "name": "Range / Stove",
+      "default_color_hex": "#c9ccce"
+    },
+    {
+      "id": "kitchen-fridge",
+      "category": "kitchen",
+      "name": "Refrigerator",
+      "default_color_hex": "#cfd3d6"
+    },
+    {
+      "id": "kitchen-hood",
+      "category": "kitchen",
+      "name": "Range Hood",
+      "default_color_hex": "#c9ccce"
+    },
+    {
+      "id": "kitchen-washer",
+      "category": "kitchen",
+      "name": "Washing Machine",
+      "default_color_hex": "#eef1f2"
+    },
+    {
+      "id": "bath-toilet",
+      "category": "bathroom",
+      "name": "Toilet",
+      "default_color_hex": "#f3f2ec"
+    },
+    {
+      "id": "bath-vanity",
+      "category": "bathroom",
+      "name": "Sink Vanity",
+      "default_color_hex": "#e7e1d6"
+    },
+    {
+      "id": "bath-shower",
+      "category": "bathroom",
+      "name": "Walk-in Shower",
+      "default_color_hex": "#dfe3e6"
+    },
+    {
+      "id": "bath-tub-alcove",
+      "category": "bathroom",
+      "name": "Alcove Bathtub",
+      "default_color_hex": "#f1f2f0"
+    },
+    {
+      "id": "bath-tub-freestanding",
+      "category": "bathroom",
+      "name": "Freestanding Tub",
+      "default_color_hex": "#f4f4f2"
+    },
+    {
+      "id": "bath-jacuzzi",
+      "category": "bathroom",
+      "name": "Jacuzzi Whirlpool",
+      "default_color_hex": "#eaf0f1"
+    }
+  ]
+}

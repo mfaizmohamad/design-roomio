@@ -1,0 +1,41 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vite
+*.log
+*.tsbuildinfo
+scripts/fb-cookies.txt
+scripts/fb-cookies.json
+scripts/.last-scrape.png
+# listings.json + public/images ARE committed: listing photos live on signed FB
+# CDN URLs that expire days after a scrape, so the local mirror is the only
+# durable copy and must travel with the data that references it.
+public/videos/
+# in-flight media downloads (swapped into place only when a scrape completes)
+public/*.staging/
+
+# agent audit evidence (session artifacts, not product)
+audit/
+# verify harness scratch screenshots (regenerable; `npm run verify:route|smoke`)
+verify-out/harness/
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+
+# Local environment files (server/.env etc). .env.example IS committed.
+.env
+.env.*
+!.env.example
+dist-demo
+
+# Local tooling output — never commit. `.agents/` + skills-lock.json are a
+# third-party agent skill install; brag-output-*/ is its rendered promo video,
+# which shows a client floor plan whose publication rights are unverified
+# (docs/developer-saas/EMBERCREST-EVIDENCE.md).
+.agents/
+skills-lock.json
+brag-output-*/

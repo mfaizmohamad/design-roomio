@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "roomio/save_envelope_schema.json",
+  "title": "Roomio Save Envelope (Persistence & Sharing)",
+  "version": "1.0",
+  "description": "Agent C's contract for feature 2 (Persistence & Sharing). ONE design = one envelope. It composes the FULL scene so a saved design is the whole dwelling, not a single room: scene.house is Agent C's House (which already embeds Agent A's RoomDesign verbatim at rooms[].interior), and scene.lighting is Agent E's LightingState (or null => E renders its defaults). This is exactly the content of a `.roomio` export file. VERSIONED + forward-compatible: a bare RoomDesign (today's single-room save), a bare House, or Agent A's localStorage design-map all migrate forward into this shape (see persistence/src/envelope/migrate.ts). Unknown fields are preserved on round-trip; consumers ignore what they don't recognize. Each agent confirms its slice round-trips: A => scene.house.rooms[].interior, C => scene.house, E => scene.lighting. Owned by Agent C; Agent D merges.",
+  "type": "object",
+  "required": ["schema_version", "design_id", "name", "createdAt", "updatedAt", "rev", "scene", "share"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "description": "Envelope format version (string). Bumped only on a breaking shape change; the loader migrates older shapes forward."
+    },
+    "design_id": { "type": "string", "description": "Stable unique id for this design." },
+    "name": {
+      "type": "string",
+      "description": "User-facing name. New designs start 'Untitled room' (never blocked on a name dialog); renamed inline later."
+    },
+    "createdAt": { "type": "number", "description": "Epoch ms when first created." },
+    "updatedAt": { "type": "number", "description": "Epoch ms of the last successful save (drives 'last-edited' + sort)." },
+    "rev": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Monotonic save revision; increments on every successful save. Drives version history + optimistic-concurrency checks."
+    },
+    "thumbnail": {
+      "type": ["string", "null"],
+      "description": "Auto-generated PNG data-URL snapshot of the scene, so the My Designs grid always looks current. null until first thumbnail is captured."
+    },
+    "scene": {
+      "type": "object",
+      "required": ["house"],
+      "additionalProperties": true,
+      "description": "The composed scene — every agent's slice in one place.",
+      "properties": {
+        "house": {
+          "type": "object",
+          "description": "Agent C's House (shared/house_schema.json v1.0). Embeds Agent A's RoomDesign at rooms[].interior — so 'interiors' are NOT a sibling key; they live inside the house. A single-room design is a one-room house with empty connectors."
+        },
+        "lighting": {
+          "type": ["object", "null"],
+          "description": "Agent E's LightingState (shared/lighting_schema.json v1.0), keyed by room_id. null => Agent E renders built-in defaults (never a dark box). Persistence treats this as an OPAQUE pass-through: it stores what E hands it and returns it byte-for-byte."
+        }
+      }
+    },
+    "share": {
+      "type": "object",
+      "required": ["access", "view_link_id", "edit_link_id"],
+      "additionalProperties": true,
+      "description": "Sharing state. Designed against the cardinal sin: a view link must NEVER expose the editor or other designs. Defaults to the SAFE option.",
+      "properties": {
+        "access": {
+          "type": "string",
+          "enum": ["private", "view", "edit"],
+          "description": "What a link grants. 'private' = not shared (initial). First share defaults to 'view'. 'edit' is only meaningful once a backend exists."
+        },
+        "view_link_id": {
+          "type": ["string", "null"],
+          "description": "Opaque token for the view-only SHOWCASE link — opens a read-only walkthrough of THIS design only (reuses Agent B's flythrough), never the editor/library/other designs."
+        },
+        "edit_link_id": {
+          "type": ["string", "null"],
+          "description": "Opaque token for an edit link. null in the local-first tier (no backend to resolve it)."
+        }
+      }
+    },
+    "history": {
+      "type": "array",
+      "description": "Optional lightweight restore points (version-history stretch). Capped (oldest dropped first). Each holds a full scene copy so a bad edit can be rolled back.",
+      "items": {
+        "type": "object",
+        "required": ["rev", "at", "kind", "scene"],
+        "properties": {
+          "rev": { "type": "integer" },
+          "at": { "type": "number" },
+          "kind": { "type": "string", "enum": ["auto", "manual"] },
+          "label": { "type": "string", "description": "Optional name for a manual checkpoint." },
+          "scene": { "type": "object", "description": "Full SceneEnvelope snapshot at this rev." },
+          "thumbnail": { "type": ["string", "null"] }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0",
+      "design_id": "design-1a2b3c4d",
+      "name": "Untitled room",
+      "createdAt": 1751250000000,
+      "updatedAt": 1751250600000,
+      "rev": 4,
+      "thumbnail": "data:image/png;base64,iVBORw0KGgo...",
+      "scene": {
+        "house": {
+          "schema_version": "1.0",
+          "house_id": "house-aa11bb22",
+          "name": "My home",
+          "rooms": [
+            {
+              "room_id": "room-aa11",
+              "type": "bedroom",
+              "footprint": { "shape": "rectangular", "x": 0, "z": 0, "rotation": 0, "w": 420, "l": 360 },
+              "interior": { "id": "room-aa11", "name": "Bedroom", "shape": "rect", "corners": [], "openings": [], "furniture": [], "materials": { "wallColor": "#e9e6df", "floorTexture": "oak" } }
+            }
+          ],
+          "connectors": []
+        },
+        "lighting": {
+          "version": "1.0",
+          "timeOfDay": 0.55,
+          "northOffsetDeg": 0,
+          "barVisible": true,
+          "northVisible": true,
+          "sun": { "enabled": true, "maxElevationDeg": 60, "warmthShift": true, "intensityScale": 1, "domeRadiusM": 30 },
+          "rooms": { "room-aa11": { "lights": [] } }
+        }
+      },
+      "share": { "access": "view", "view_link_id": "9f8e7d6c5b4a3210", "edit_link_id": null }
+    }
+  ]
+}

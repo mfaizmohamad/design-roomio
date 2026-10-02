@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Pinch zoom stays enabled page-wide (WCAG 1.4.4); the 3D canvas opts out of
+         browser touch gestures via `touch-action: none` in CSS instead. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--DEMO_CSP: vite.demo.config.ts replaces this marker with the CSP meta at build time-->
+    <meta name="description" content="Explore a furnished 3D duplex in your browser. An interactive demo of Roomio's home rendering engine." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Roomio — 3D Home Demo</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/demo/main.tsx"></script>
+  </body>
+</html>

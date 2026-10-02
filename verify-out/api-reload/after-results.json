@@ -1,0 +1,17 @@
+{
+  "baseline_backendAvailable": true,
+  "force304_backendAvailable": true,
+  "force304_authStatus": "authed",
+  "force500_backendAvailable": false,
+  "refuse_backendAvailable": false,
+  "healthResponseStatuses": [
+    200,
+    200,
+    200,
+    304,
+    304,
+    500,
+    304
+  ],
+  "phase": "after"
+}

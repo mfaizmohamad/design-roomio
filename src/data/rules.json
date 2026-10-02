@@ -1,0 +1,213 @@
+[
+  {
+    "rule_id": "R1",
+    "tier": "necessity",
+    "priority": 1,
+    "trigger": { "kind": "absent_role", "role": "bed", "room_types": ["bedroom", "studio"] },
+    "suggest_archetype": "bed-queen",
+    "message": "No bed in this bedroom",
+    "rationale": "A bedroom's primary function piece is missing.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R2",
+    "tier": "necessity",
+    "priority": 2,
+    "trigger": { "kind": "absent_role", "role": "seating", "room_types": ["living", "studio", "family", "den"] },
+    "suggest_archetype": "sofa-3",
+    "message": "Nowhere to sit",
+    "rationale": "A living space needs seating — there's no place to sit.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R3",
+    "tier": "necessity",
+    "priority": 1,
+    "trigger": { "kind": "absent_role", "role": "light" },
+    "suggest_archetype": "decor-lamp",
+    "message": "No light source",
+    "rationale": "Every room needs at least one light.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R4",
+    "tier": "polish",
+    "priority": 4,
+    "trigger": { "kind": "role_without_role", "have": "seating", "missing": "rug" },
+    "suggest_archetype": "decor-rug-large",
+    "message": "Seating has no rug",
+    "rationale": "A rug anchors the seating zone — an absent/too-small rug is the #1 design crime.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R5",
+    "tier": "polish",
+    "priority": 5,
+    "trigger": { "kind": "role_count_between", "role": "light", "min": 1, "max": 1 },
+    "suggest_archetype": "decor-lamp-table",
+    "message": "Only one light source",
+    "rationale": "Layer ambient + task + accent — a single fixture is harsh and flat.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R6",
+    "tier": "polish",
+    "priority": 5,
+    "trigger": { "kind": "no_focal_point" },
+    "suggest_archetype": "decor-tv",
+    "message": "No clear focal point",
+    "rationale": "Anchor the room around one focal point (TV, art wall, statement sofa) or it feels directionless.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R7",
+    "tier": "polish",
+    "priority": 6,
+    "trigger": { "kind": "all_seating_wall_hugged", "threshold_cm": 35, "room_types": ["living", "family", "den", "studio"] },
+    "suggest_archetype": "decor-rug-large",
+    "message": "All seating is against the walls",
+    "rationale": "Float seating inward to form a conversation zone — wall-hugging feels cold and disconnected.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R8",
+    "tier": "polish",
+    "priority": 7,
+    "trigger": { "kind": "absent_role", "role": "greenery" },
+    "suggest_archetype": "decor-plant",
+    "message": "No greenery",
+    "rationale": "A plant adds life and biophilic warmth — it recurs in most well-styled rooms.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R9",
+    "tier": "polish",
+    "priority": 6,
+    "trigger": { "kind": "role_without_role", "have": "seating", "missing": "coffee_or_side", "room_types": ["living", "family", "den", "studio"] },
+    "suggest_archetype": "table-coffee",
+    "message": "Seating has no coffee/side table",
+    "rationale": "A coffee or side table completes the functional seating group.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R10",
+    "tier": "polish",
+    "priority": 8,
+    "trigger": { "kind": "density_over", "ratio": 0.5 },
+    "suggest_archetype": "",
+    "message": "Room is getting crowded",
+    "rationale": "Space things out for traffic flow — leave breathing room and don't overcrowd.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R11",
+    "tier": "polish",
+    "priority": 8,
+    "trigger": { "kind": "color_overload", "max_clusters": 4 },
+    "suggest_archetype": "",
+    "message": "Too many competing colors",
+    "rationale": "Rein toward a 60-30-10 balance — too many strong colors reads as visual chaos.",
+    "genre_scope": ["all"]
+  },
+  {
+    "rule_id": "R12",
+    "tier": "polish",
+    "priority": 5,
+    "trigger": { "kind": "role_without_role", "have": "bed", "missing": "nightstand" },
+    "suggest_archetype": "storage-nightstand",
+    "message": "Bed has no nightstand",
+    "rationale": "A bedside table + lamp is the standard functional pairing for a bed.",
+    "genre_scope": ["all"]
+  },
+
+  {
+    "rule_id": "G-anime-shelf",
+    "tier": "necessity",
+    "priority": 3,
+    "trigger": { "kind": "absent_role", "role": "display_shelf" },
+    "suggest_archetype": "storage-cube",
+    "message": "No display shelving",
+    "rationale": "Figures, Nendoroids and manga need a home — display shelving is the otaku-room signature.",
+    "genre_scope": ["anime_otaku"]
+  },
+  {
+    "rule_id": "G-anime-desk",
+    "tier": "polish",
+    "priority": 6,
+    "trigger": { "kind": "absent_role", "role": "desk" },
+    "suggest_archetype": "desk-office",
+    "message": "No anime/gaming desk",
+    "rationale": "A gaming + anime desk corner is a recurring otaku-room zone.",
+    "genre_scope": ["anime_otaku"]
+  },
+  {
+    "rule_id": "G-gamer-desk",
+    "tier": "necessity",
+    "priority": 3,
+    "trigger": { "kind": "absent_role", "role": "desk" },
+    "suggest_archetype": "desk-l",
+    "message": "No desk / monitor wall",
+    "rationale": "A battlestation is built around a desk and monitor wall.",
+    "genre_scope": ["gamer"]
+  },
+  {
+    "rule_id": "G-gamer-chair",
+    "tier": "polish",
+    "priority": 6,
+    "trigger": { "kind": "absent_archetype", "archetype_id": "chair-gaming" },
+    "suggest_archetype": "chair-gaming",
+    "message": "No gaming chair",
+    "rationale": "A racing-style gaming chair is the signature seat of the setup.",
+    "genre_scope": ["gamer"]
+  },
+  {
+    "rule_id": "G-sports-screen",
+    "tier": "necessity",
+    "priority": 3,
+    "trigger": { "kind": "absent_role", "role": "screen" },
+    "suggest_archetype": "decor-tv-large",
+    "message": "No big screen",
+    "rationale": "Game day is built around a big-screen media wall.",
+    "genre_scope": ["sports"]
+  },
+  {
+    "rule_id": "G-sports-memorabilia",
+    "tier": "polish",
+    "priority": 7,
+    "trigger": { "kind": "absent_role", "role": "display_shelf" },
+    "suggest_archetype": "storage-wall-shelf",
+    "message": "Nowhere to show memorabilia",
+    "rationale": "Add a shelf for framed jerseys, game balls and trophies — the fan-room signature.",
+    "genre_scope": ["sports"]
+  },
+  {
+    "rule_id": "G-bachelor-bar",
+    "tier": "polish",
+    "priority": 7,
+    "trigger": { "kind": "absent_role", "role": "bar" },
+    "suggest_archetype": "storage-barcart",
+    "message": "No bar nook",
+    "rationale": "A bar cart or drinks cabinet is the indulgent bachelor-pad signature.",
+    "genre_scope": ["bachelor"]
+  },
+  {
+    "rule_id": "G-biophilic-plants",
+    "tier": "polish",
+    "priority": 6,
+    "trigger": { "kind": "count_role_below", "role": "greenery", "min": 3 },
+    "suggest_archetype": "decor-plant",
+    "message": "Add more greenery",
+    "rationale": "A biophilic room layers plants at varying heights — one or two isn't a jungle yet.",
+    "genre_scope": ["biophilic"]
+  },
+  {
+    "rule_id": "G-neo-mirror",
+    "tier": "polish",
+    "priority": 7,
+    "trigger": { "kind": "absent_archetype", "archetype_id": "decor-mirror" },
+    "suggest_archetype": "decor-mirror",
+    "message": "No statement mirror",
+    "rationale": "A sunburst or oversized mirror is the Neo-Deco glam signature and bounces evening light.",
+    "genre_scope": ["neo_deco"]
+  }
+]

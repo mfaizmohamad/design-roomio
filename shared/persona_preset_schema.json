@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://roomio.local/schemas/persona_preset.json",
+  "title": "Roomio Persona Room Preset",
+  "description": "A Pinterest-grounded persona room preset (Agent A, Feature 1). Assembled only from ids in shared/archetypes.json; unmodeled genre items are flagged in asset_requests. Loaded into the editor as a fully-editable RoomDesign. Version 1.0.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "genre_id",
+    "display_name",
+    "persona_type",
+    "style_note",
+    "room",
+    "room_type",
+    "materials",
+    "placed_items",
+    "pinterest_sources"
+  ],
+  "properties": {
+    "genre_id": { "type": "string", "description": "stable persona id, e.g. anime_otaku" },
+    "display_name": { "type": "string" },
+    "persona_type": { "enum": ["life_stage", "interest", "aesthetic"] },
+    "emoji": { "type": "string" },
+    "blurb": { "type": "string", "description": "one-line picker subtitle" },
+    "style_note": { "type": "string", "description": "1-2 sentence vibe note in the genre's own language" },
+    "room": {
+      "type": "object",
+      "required": ["shape", "width_cm", "length_cm"],
+      "properties": {
+        "shape": { "enum": ["rect", "l", "t", "u", "cut", "beveled"] },
+        "width_cm": { "type": "number", "minimum": 100 },
+        "length_cm": { "type": "number", "minimum": 100 }
+      }
+    },
+    "room_type": {
+      "enum": ["living", "bedroom", "studio", "family", "office", "den"],
+      "description": "functional type; drives the suggestion engine's necessity rules"
+    },
+    "materials": {
+      "type": "object",
+      "required": ["wall_color", "floor"],
+      "properties": {
+        "wall_color": { "type": "string", "pattern": "^#?[0-9a-fA-F]{6}$" },
+        "floor": { "type": "string", "description": "floor texture id from data/materials" }
+      }
+    },
+    "placed_items": {
+      "type": "array",
+      "description": "furniture placed in room coordinate space (x right, z depth, cm; origin 0,0)",
+      "items": {
+        "type": "object",
+        "required": ["archetype_id", "x", "z", "rot_deg"],
+        "properties": {
+          "archetype_id": { "type": "string", "description": "MUST be an id from shared/archetypes.json" },
+          "x": { "type": "number" },
+          "z": { "type": "number" },
+          "rot_deg": { "type": "number", "description": "rotation about Y in degrees; 0 faces +z" },
+          "color": { "type": "string", "pattern": "^#?[0-9a-fA-F]{6}$" },
+          "w": { "type": "number", "description": "optional override (clamped to archetype min/max)" },
+          "d": { "type": "number" },
+          "h": { "type": "number" }
+        }
+      }
+    },
+    "pinterest_sources": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "description": "provenance: pin/board/source urls the recurring elements were tallied from"
+    },
+    "asset_requests": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "unmodeled genre items needing a new archetype (also logged as REQUEST -> ASSET in roomio.txt)"
+    }
+  }
+}

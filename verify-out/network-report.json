@@ -1,0 +1,79 @@
+{
+  "chunkKind": {
+    "Wizard-BiBaqvHo.js": null,
+    "index-4MZqs38N.js": null,
+    "index-D8pfeTT5.js": "PATHTRACER",
+    "index-DLcFEsOx.js": "ENCODER",
+    "r3f-CXN2dBE6.js": "R3F",
+    "react-vendor-BxXUFRJ_.js": null,
+    "three-core-C93pg8C9.js": "THREE-CORE"
+  },
+  "phases": {
+    "login": {
+      "loaded": [
+        "index-4MZqs38N.js",
+        "react-vendor-BxXUFRJ_.js"
+      ],
+      "threeLoaded": [],
+      "encoderLoaded": []
+    },
+    "listings": {
+      "loaded": [
+        "index-4MZqs38N.js",
+        "react-vendor-BxXUFRJ_.js"
+      ],
+      "threeLoaded": [],
+      "encoderLoaded": []
+    },
+    "wizard": {
+      "loaded": [
+        "index-4MZqs38N.js",
+        "react-vendor-BxXUFRJ_.js",
+        "Wizard-BiBaqvHo.js",
+        "r3f-CXN2dBE6.js",
+        "three-core-C93pg8C9.js"
+      ],
+      "threeLoaded": [
+        "r3f-CXN2dBE6.js",
+        "three-core-C93pg8C9.js"
+      ],
+      "encoderLoaded": []
+    },
+    "replica": {
+      "loaded": [
+        "index-4MZqs38N.js",
+        "react-vendor-BxXUFRJ_.js",
+        "Wizard-BiBaqvHo.js",
+        "r3f-CXN2dBE6.js",
+        "three-core-C93pg8C9.js"
+      ],
+      "threeLoaded": [
+        "r3f-CXN2dBE6.js",
+        "three-core-C93pg8C9.js"
+      ]
+    },
+    "export": {
+      "encoderChunks": [
+        "index-DLcFEsOx.js"
+      ],
+      "encoderLoadedAfterExport": [
+        "index-DLcFEsOx.js"
+      ]
+    }
+  },
+  "verdicts": {
+    "loginNoThree": true,
+    "loginNoEncoder": true,
+    "loginRendered": true,
+    "listingsNoThree": true,
+    "listingsNoEncoder": true,
+    "wizardLoadsThree": true,
+    "wizardCanvas": true,
+    "wizardNoEncoderYet": true,
+    "replicaCanvas": true,
+    "replicaLoadsThree": true,
+    "encoderNotLoadedBeforeExport": true,
+    "exportButtonClicked": true,
+    "encoderLoadedOnDemand": true
+  }
+}

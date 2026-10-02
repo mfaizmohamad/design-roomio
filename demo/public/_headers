@@ -1,0 +1,16 @@
+# Cloudflare Pages response headers for the public demo (dist-demo/).
+# The CSP itself is a <meta> in index.html (see vite.demo.config.ts); frame-ancestors
+# cannot be set from a <meta>, so framing is blocked here instead.
+
+/*
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# Vite content-hashes every file under /assets/, so a changed file gets a new
+# name and these can be cached for a year. index.html is NOT under /assets/ and
+# keeps Pages' default revalidation, which is what lets a deploy take effect.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,11 @@
+# Roomio Detection Pipeline (Agent B) — Python deps. Install into the local venv:
+#   python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+# All local / open-source. No paid or cloud-inference SDKs.
+
+ollama>=0.3.0           # client for the local Ollama daemon (vision model calls)
+numpy>=1.26,<3          # array math
+opencv-python-headless>=4.9   # image IO + crops (headless: no GUI/Qt deps, CI-safe)
+scikit-learn>=1.4       # k-means for dominant-color extraction
+Pillow>=10.0            # robust image decode + EXIF orientation
+pillow-heif>=0.16       # decode iPhone HEIC/HEIF uploads (registers a PIL opener)
+jsonschema>=4.0         # validate our own output against shared/detection_schema.json

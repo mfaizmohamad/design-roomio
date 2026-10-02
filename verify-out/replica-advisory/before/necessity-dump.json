@@ -1,0 +1,426 @@
+{
+  "kothrud-2bhk": [
+    {
+      "name": "Balcony",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Living Room",
+      "roomType": "living",
+      "isReplica": false,
+      "furniture": [
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    },
+    {
+      "name": "Kitchen",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [
+        "kitchen-counter",
+        "kitchen-counter"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Dry Balcony",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Hallway",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Master Bedroom",
+      "roomType": "bedroom",
+      "isReplica": false,
+      "furniture": [
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No bed in this bedroom",
+        "No light source"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    },
+    {
+      "name": "Bathroom",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [
+        "bath-geyser",
+        "bath-toilet"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bedroom 2",
+      "roomType": "bedroom",
+      "isReplica": false,
+      "furniture": [
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No bed in this bedroom",
+        "No light source"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    }
+  ],
+  "malad-1bhk": [
+    {
+      "name": "Hall",
+      "roomType": "living",
+      "isReplica": false,
+      "furniture": [
+        "storage-tv",
+        "decor-tv",
+        "sofa-3",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No light source"
+      ],
+      "polish": [
+        "Seating has no rug",
+        "All seating is against the walls",
+        "Seating has no coffee/side table",
+        "No greenery"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    },
+    {
+      "name": "Bedroom",
+      "roomType": "bedroom",
+      "isReplica": false,
+      "furniture": [
+        "bed-full",
+        "storage-wardrobe",
+        "table-vanity",
+        "decor-mirror",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No light source"
+      ],
+      "polish": [
+        "Bed has no nightstand",
+        "No greenery"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    },
+    {
+      "name": "Kitchen",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [
+        "kitchen-counter",
+        "kitchen-counter",
+        "kitchen-stove"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Utility",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [
+        "kitchen-fridge",
+        "kitchen-washer",
+        "bath-vanity",
+        "bath-geyser"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bathroom",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [
+        "bath-toilet",
+        "bath-shower",
+        "bath-geyser"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    }
+  ],
+  "andheri-pg": [
+    {
+      "name": "Hall",
+      "roomType": "living",
+      "isReplica": false,
+      "furniture": [
+        "bed-twin",
+        "bed-twin",
+        "storage-wardrobe",
+        "storage-tv",
+        "decor-ceiling-fan",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "Bed has no nightstand",
+        "No greenery"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one.",
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    },
+    {
+      "name": "Balcony",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bedroom",
+      "roomType": "bedroom",
+      "isReplica": false,
+      "furniture": [
+        "bed-twin",
+        "storage-wardrobe",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No light source"
+      ],
+      "polish": [
+        "Bed has no nightstand",
+        "No greenery",
+        "Room is getting crowded"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    },
+    {
+      "name": "Bedroom 2",
+      "roomType": "bedroom",
+      "isReplica": false,
+      "furniture": [
+        "bed-twin",
+        "storage-wardrobe",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No light source"
+      ],
+      "polish": [
+        "Bed has no nightstand",
+        "No greenery",
+        "Room is getting crowded"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    },
+    {
+      "name": "Hallway",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Kitchen",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [
+        "kitchen-counter",
+        "kitchen-fridge",
+        "kitchen-washer",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery",
+        "Room is getting crowded"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    },
+    {
+      "name": "Bathroom",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [
+        "bath-toilet"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bathroom 2",
+      "roomType": "(undefined→living)",
+      "isReplica": false,
+      "furniture": [
+        "bath-toilet"
+      ],
+      "necessity": [
+        "No light source",
+        "Nowhere to sit"
+      ],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    }
+  ],
+  "oshiwara-room": [
+    {
+      "name": "Room",
+      "roomType": "bedroom",
+      "isReplica": false,
+      "furniture": [
+        "bed-full",
+        "storage-nightstand",
+        "storage-wardrobe",
+        "decor-ladder-shelf",
+        "decor-curtain",
+        "decor-ac",
+        "decor-rug-large",
+        "ottoman-pouf",
+        "table-side",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [
+        "No light source"
+      ],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": [
+        "“Ceiling Fan” isn’t against a wall — wall pieces look best mounted on one."
+      ]
+    }
+  ]
+}

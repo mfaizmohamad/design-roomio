@@ -1,0 +1,184 @@
+/* Public demo landing page. Same palette as the buyer viewer (viewer.css) so the
+   jump from landing to tour reads as one product. */
+
+.demo-landing {
+  --demo-ink: #222d29;
+  --demo-muted: #5d6560;
+  --demo-accent: #b75b35;
+  --demo-bg: #f5f2ec;
+  --demo-card: #fffdf9;
+  --demo-line: #dedbd5;
+  /* index.css sets body { overflow: hidden } for the full-screen editor, so the
+     landing page must scroll itself or everything below the fold is unreachable. */
+  height: 100%;
+  overflow-y: auto;
+  color: var(--demo-ink);
+  background: var(--demo-bg);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.demo-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px 24px;
+}
+
+.demo-logo { font-size: 19px; font-weight: 800; }
+
+.demo-nav-cta {
+  color: var(--demo-ink);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid var(--demo-accent);
+}
+
+.demo-hero {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 72px 24px 56px;
+}
+
+.demo-kicker {
+  margin: 0 0 16px;
+  color: var(--demo-accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.demo-hero h1 {
+  max-width: 14ch;
+  margin: 0 0 20px;
+  font-family: Georgia, serif;
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.demo-lede {
+  max-width: 56ch;
+  margin: 0 0 32px;
+  color: var(--demo-muted);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.demo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+
+.demo-primary {
+  display: inline-block;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: var(--demo-ink);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.demo-primary:hover,
+.demo-primary:focus-visible { background: var(--demo-accent); }
+
+.demo-hint { color: var(--demo-muted); font-size: 14px; }
+
+/* The two sample-home choices: big tap targets, side by side, stacked on phones. */
+.demo-homes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+.demo-home-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px;
+  border: 1px solid var(--demo-line);
+  border-radius: 12px;
+  background: var(--demo-card);
+  color: var(--demo-ink);
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.demo-home-card:hover,
+.demo-home-card:focus-visible { border-color: var(--demo-accent); transform: translateY(-2px); }
+
+.demo-home-emoji { font-size: 28px; line-height: 1; }
+.demo-home-title { font-size: 22px; font-weight: 700; }
+.demo-home-meta { color: var(--demo-muted); font-size: 15px; }
+.demo-home-go { margin-top: 10px; color: var(--demo-accent); font-weight: 700; }
+
+.demo-features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+.demo-features article {
+  padding: 24px;
+  border: 1px solid var(--demo-line);
+  border-radius: 12px;
+  background: var(--demo-card);
+}
+
+.demo-features h2 { margin: 0 0 8px; font-size: 17px; }
+.demo-features p { margin: 0; color: var(--demo-muted); font-size: 15px; line-height: 1.5; }
+
+.demo-footer {
+  border-top: 1px solid var(--demo-line);
+  color: var(--demo-muted);
+  font-size: 13px;
+}
+
+.demo-footer-note {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px 24px 0;
+  line-height: 1.5;
+}
+
+.demo-footer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 16px 24px 24px;
+}
+
+.demo-footer-links { display: flex; gap: 20px; }
+
+.demo-footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--demo-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.demo-footer-links a:hover,
+.demo-footer-links a:focus-visible { color: var(--demo-accent); }
+
+@media (max-width: 760px) {
+  .demo-hero { padding: 40px 16px 40px; }
+  .demo-nav { padding: 16px; }
+  .demo-features { grid-template-columns: 1fr; padding: 0 16px 48px; }
+  .demo-homes { grid-template-columns: 1fr; padding: 0 16px 40px; }
+  .demo-footer-note { padding: 20px 16px 0; }
+  .demo-footer-bar { padding: 16px 16px 24px; }
+}

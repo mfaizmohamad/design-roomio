@@ -1,0 +1,145 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "roomio/house_schema.json",
+  "title": "Roomio House (Multi-Room + Connectors)",
+  "version": "1.0",
+  "description": "Agent C's contract. A House WRAPS Agent A's single-room RoomDesign (room.interior) — it does not replace it. Backward compatibility is mandatory: a bare RoomDesign (today's single-room save) loads as a one-room house with an empty connectors array. Owned by Agent C; published for Agent B (cross-room camera/detection) and Agent A (schema alignment). Verify clearances/connector rules against architectural sources before extending.",
+  "type": "object",
+  "required": ["schema_version", "house_id", "rooms", "connectors"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "house_id": { "type": "string" },
+    "name": { "type": "string" },
+    "createdAt": { "type": "number" },
+    "updatedAt": { "type": "number" },
+    "rooms": {
+      "type": "array",
+      "description": "Each room is a typed placement wrapping one Agent A RoomDesign.",
+      "items": { "$ref": "#/definitions/HouseRoom" }
+    },
+    "connectors": {
+      "type": "array",
+      "description": "Joins between rooms on shared walls. Empty for a single-room house.",
+      "items": { "$ref": "#/definitions/Connector" }
+    }
+  },
+  "definitions": {
+    "HouseRoom": {
+      "type": "object",
+      "required": ["room_id", "type", "footprint", "interior"],
+      "additionalProperties": true,
+      "properties": {
+        "room_id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["bedroom", "living", "kitchen", "bathroom", "dining", "office", "foyer", "hallway"]
+        },
+        "footprint": { "$ref": "#/definitions/Footprint" },
+        "interior": {
+          "type": "object",
+          "description": "Agent A's RoomDesign, verbatim (src/types.ts). Source of truth lives in the front-end; this contract treats it as an opaque-but-required wrapped object. The fields Agent C's wall-cutting depends on are: corners[] (cm polygon), openings[], wallHeight, wallThickness."
+        }
+      }
+    },
+    "Footprint": {
+      "type": "object",
+      "description": "Placement of the room's interior in the house plane. Interior local cm coords are rotated by `rotation` then translated by (x, z). w/l cache the interior bbox size.",
+      "required": ["x", "z", "rotation", "w", "l"],
+      "properties": {
+        "shape": { "type": "string", "enum": ["rectangular", "polygon"] },
+        "x": { "type": "number", "description": "world cm of interior local origin" },
+        "z": { "type": "number" },
+        "rotation": { "type": "number", "description": "radians in the house plane" },
+        "w": { "type": "number", "description": "interior bbox width (cm)" },
+        "l": { "type": "number", "description": "interior bbox length/depth (cm)" }
+      }
+    },
+    "Connector": {
+      "type": "object",
+      "description": "A connector occupies a span on a SHARED WALL between two rooms. Placing it cuts an opening into BOTH rooms' walls (Agent C reuses Agent A's deriveWalls + buildWallParts opening semantics).",
+      "required": ["connector_id", "type", "between", "shared_wall", "position_along_wall", "width_cm"],
+      "additionalProperties": true,
+      "properties": {
+        "connector_id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": [
+            "hinged",
+            "double",
+            "pocket",
+            "cased_opening",
+            "archway",
+            "wide_opening",
+            "pass_through",
+            "half_wall",
+            "hallway_link"
+          ]
+        },
+        "between": {
+          "type": "array",
+          "description": "[roomIdA, roomIdB]; order matches shared_wall.room_a_wall / room_b_wall.",
+          "items": { "type": "string" },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "shared_wall": {
+          "type": "object",
+          "required": ["room_a_wall", "room_b_wall"],
+          "properties": {
+            "room_a_wall": { "type": "integer", "description": "wall (corner-edge) index in room A interior" },
+            "room_b_wall": { "type": "integer", "description": "wall index in room B interior" }
+          }
+        },
+        "position_along_wall": { "type": "number", "minimum": 0, "maximum": 1 },
+        "width_cm": { "type": "number" },
+        "swing": {
+          "description": "Doors only; null for open connectors. Generalizes {dir, hinge}: into_room = which room the leaf opens into, hinge = which end of the opening the hinge sits on.",
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "required": ["into_room", "hinge"],
+              "properties": {
+                "into_room": { "type": "string" },
+                "hinge": { "type": "string", "enum": ["left", "right"] }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0",
+      "house_id": "h_001",
+      "name": "My home",
+      "rooms": [
+        {
+          "room_id": "r_living",
+          "type": "living",
+          "footprint": { "shape": "rectangular", "x": 0, "z": 0, "rotation": 0, "w": 480, "l": 400 },
+          "interior": { "id": "r_living", "shape": "rect", "corners": [], "openings": [] }
+        },
+        {
+          "room_id": "r_kitchen",
+          "type": "kitchen",
+          "footprint": { "shape": "rectangular", "x": 480, "z": 0, "rotation": 0, "w": 360, "l": 400 },
+          "interior": { "id": "r_kitchen", "shape": "rect", "corners": [], "openings": [] }
+        }
+      ],
+      "connectors": [
+        {
+          "connector_id": "c_1",
+          "type": "cased_opening",
+          "between": ["r_living", "r_kitchen"],
+          "shared_wall": { "room_a_wall": 1, "room_b_wall": 3 },
+          "position_along_wall": 0.5,
+          "width_cm": 120,
+          "swing": null
+        }
+      ]
+    }
+  ]
+}

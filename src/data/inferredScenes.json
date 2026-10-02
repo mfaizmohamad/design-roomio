@@ -1,0 +1,925 @@
+{
+  "version": 1,
+  "kind": "roomio.inferred-scenes",
+  "generatedAt": "2026-07-03",
+  "generator": "scripts/infer-listing-scene.mjs",
+  "method": "classical-cv: downscale + gray-world white-balance (linear) + Lab-histogram region dominant color + heuristic floor-family + nearest-texture snap",
+  "disclaimer": "AI APPROXIMATION from listing photos — finishes are inferred, not verified. Geometry stays metadata-driven (VLMs give labels, not dimensions).",
+  "confidenceMin": 0.5,
+  "vlm": {
+    "enabled": false
+  },
+  "listings": {
+    "4550924078565639": {
+      "id": "4550924078565639",
+      "photoCount": 2,
+      "source": "classical",
+      "floor": {
+        "family": "concrete",
+        "textureId": "dark-concrete",
+        "group": "stone",
+        "baseHex": "#80735c",
+        "snapDeltaE": 13.4,
+        "confidence": 0.675,
+        "photos": 2
+      },
+      "wall": {
+        "hex": "#c2b9a2",
+        "confidence": 0.504,
+        "consistency": 0.58,
+        "photos": 2
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#a99977",
+          "wallHex": "#b9ab8b"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#80735c",
+          "wallHex": "#d1d1cf"
+        }
+      ]
+    },
+    "4550924805232233": {
+      "id": "4550924805232233",
+      "photoCount": 2,
+      "source": "classical",
+      "floor": {
+        "family": "wood",
+        "textureId": "walnut",
+        "group": "wood",
+        "baseHex": "#887059",
+        "snapDeltaE": 13.7,
+        "confidence": 0.509,
+        "photos": 1
+      },
+      "wall": {
+        "hex": "#bfbdbe",
+        "confidence": 0.678,
+        "consistency": 0.71,
+        "photos": 2
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#887059",
+          "wallHex": "#aba8a8"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#cfbe99",
+          "wallHex": "#d2d2d2"
+        }
+      ]
+    },
+    "4550925665232147": {
+      "id": "4550925665232147",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "concrete",
+        "textureId": "dark-concrete",
+        "group": "stone",
+        "baseHex": "#747471",
+        "snapDeltaE": 3.3,
+        "confidence": 0.599,
+        "photos": 4
+      },
+      "wall": {
+        "hex": "#a4a29f",
+        "confidence": 0.653,
+        "consistency": 0.59,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#9b988d",
+          "wallHex": "#c0bfbe"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#737472",
+          "wallHex": "#898885"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#747471",
+          "wallHex": "#c0bfbd"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#c18e74",
+          "wallHex": "#75746a"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#535352",
+          "wallHex": "#acaaa9"
+        }
+      ]
+    },
+    "4550935985231115": {
+      "id": "4550935985231115",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "marble",
+        "textureId": "glossy-marble",
+        "group": "stone",
+        "baseHex": "#c3bab0",
+        "snapDeltaE": 3.9,
+        "confidence": 0.689,
+        "photos": 5
+      },
+      "wall": {
+        "hex": "#c6c5c3",
+        "confidence": 0.532,
+        "consistency": 0.64,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#b6ab9e",
+          "wallHex": "#dbe4ee"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#464616",
+          "wallHex": "#c6d0db"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#d2c0a9",
+          "wallHex": "#c7d0d9"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#c3bab0",
+          "wallHex": "#bbab95"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#d1d2d4",
+          "wallHex": "#c5c1bc"
+        }
+      ]
+    },
+    "4550949181896462": {
+      "id": "4550949181896462",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "tile",
+        "textureId": "grey-tile",
+        "group": "stone",
+        "baseHex": "#c2c0bc",
+        "snapDeltaE": 1.6,
+        "confidence": 0.674,
+        "photos": 4
+      },
+      "wall": {
+        "hex": "#bfb9b6",
+        "confidence": 0.557,
+        "consistency": 0.7,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#c1bfc1",
+          "wallHex": "#b29485"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#c4bdb2",
+          "wallHex": "#b9b8b6"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#c2c0bc",
+          "wallHex": "#c0c0be"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#845940",
+          "wallHex": "#d8d0c7"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#d4cfd0",
+          "wallHex": "#b7bfc8"
+        }
+      ]
+    },
+    "4550951808562866": {
+      "id": "4550951808562866",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "concrete",
+        "textureId": "dark-concrete",
+        "group": "stone",
+        "baseHex": "#89857d",
+        "snapDeltaE": 10.5,
+        "confidence": 0.703,
+        "photos": 5
+      },
+      "wall": {
+        "hex": "#a3a2a0",
+        "confidence": 0.473,
+        "consistency": 0.58,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#d5d0c6",
+          "wallHex": "#bbbfc1"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#575353",
+          "wallHex": "#77757a"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#89857d",
+          "wallHex": "#c0bfbe"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#49433b",
+          "wallHex": "#8d8980"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#868789",
+          "wallHex": "#afaba3"
+        }
+      ]
+    },
+    "4550957751895605": {
+      "id": "4550957751895605",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "tile",
+        "textureId": "grey-tile",
+        "group": "stone",
+        "baseHex": "#c2c2c5",
+        "snapDeltaE": 4.6,
+        "confidence": 0.606,
+        "photos": 4
+      },
+      "wall": {
+        "hex": "#bab8b1",
+        "confidence": 0.604,
+        "consistency": 0.67,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#cdcecc",
+          "wallHex": "#acaaa1"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#929b96",
+          "wallHex": "#d4d2d3"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#c2c2c5",
+          "wallHex": "#c4c0b2"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#49a2bc",
+          "wallHex": "#848786"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#aa7c57",
+          "wallHex": "#c1bcb2"
+        }
+      ]
+    },
+    "4550979941893386": {
+      "id": "4550979941893386",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "tile",
+        "textureId": "grey-tile",
+        "group": "stone",
+        "baseHex": "#bcbebe",
+        "snapDeltaE": 2.4,
+        "confidence": 0.713,
+        "photos": 5
+      },
+      "wall": {
+        "hex": "#dad9d6",
+        "confidence": 0.549,
+        "consistency": 0.84,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#d0cfd0",
+          "wallHex": "#d0d0cd"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#bcbebe",
+          "wallHex": "#e5e5e6"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#abacab",
+          "wallHex": "#e8e8e7"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#a09888",
+          "wallHex": "#d9d6cb"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#ced1de",
+          "wallHex": "#d2d4d4"
+        }
+      ]
+    },
+    "4550980481893332": {
+      "id": "4550980481893332",
+      "photoCount": 3,
+      "source": "classical",
+      "floor": {
+        "family": "wood",
+        "textureId": "walnut",
+        "group": "wood",
+        "baseHex": "#583d22",
+        "snapDeltaE": 12.5,
+        "confidence": 0.711,
+        "photos": 2
+      },
+      "wall": {
+        "hex": "#877971",
+        "confidence": 0.605,
+        "consistency": 0.59,
+        "photos": 3
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#573f24",
+          "wallHex": "#777274"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#514039",
+          "wallHex": "#999698"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#583d22",
+          "wallHex": "#876e58"
+        }
+      ]
+    },
+    "4550982841893096": {
+      "id": "4550982841893096",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "concrete",
+        "textureId": "mid-concrete",
+        "group": "stone",
+        "baseHex": "#949da6",
+        "snapDeltaE": 9.4,
+        "confidence": 0.598,
+        "photos": 4
+      },
+      "wall": {
+        "hex": "#bfb9b3",
+        "confidence": 0.553,
+        "consistency": 0.65,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#b7c0c7",
+          "wallHex": "#d5d0cd"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#6e7380",
+          "wallHex": "#8d877a"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#876f53",
+          "wallHex": "#bcbebc"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#949da6",
+          "wallHex": "#d4d2c9"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#cfd4d7",
+          "wallHex": "#cdbdb8"
+        }
+      ]
+    },
+    "4550993835225330": {
+      "id": "4550993835225330",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "wood",
+        "textureId": "chevron",
+        "group": "wood",
+        "baseHex": "#b29372",
+        "snapDeltaE": 14,
+        "confidence": 0.476,
+        "photos": 3
+      },
+      "wall": {
+        "hex": "#baaea1",
+        "confidence": 0.527,
+        "consistency": 0.4,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#b1aa9f",
+          "wallHex": "#d3d1d0"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#b29372",
+          "wallHex": "#d4b9a2"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#83715a",
+          "wallHex": "#938771"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#c2a787",
+          "wallHex": "#d4d3d1"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#755e3f",
+          "wallHex": "#797367"
+        }
+      ]
+    },
+    "4550996295225084": {
+      "id": "4550996295225084",
+      "photoCount": 1,
+      "source": "classical",
+      "floor": {
+        "family": "tile",
+        "textureId": "grey-tile",
+        "group": "stone",
+        "baseHex": "#bebebf",
+        "snapDeltaE": 3.2,
+        "confidence": 0.706,
+        "photos": 1
+      },
+      "wall": {
+        "hex": "#c6beb1",
+        "confidence": 0.564,
+        "consistency": 1,
+        "photos": 1
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#bebebf",
+          "wallHex": "#c6beb1"
+        }
+      ]
+    },
+    "4551006055224108": {
+      "id": "4551006055224108",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "concrete",
+        "textureId": "mid-concrete",
+        "group": "stone",
+        "baseHex": "#9c998a",
+        "snapDeltaE": 7.7,
+        "confidence": 0.665,
+        "photos": 5
+      },
+      "wall": {
+        "hex": "#c3c0b8",
+        "confidence": 0.583,
+        "consistency": 0.63,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#ada99d",
+          "wallHex": "#aeab9d"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#9c998a",
+          "wallHex": "#d0d0cf"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#484239",
+          "wallHex": "#d1d1d0"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#d4d5d5",
+          "wallHex": "#a2967f"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#9e9d8c",
+          "wallHex": "#d2d2d1"
+        }
+      ]
+    },
+    "4551020425222671": {
+      "id": "4551020425222671",
+      "photoCount": 2,
+      "source": "classical",
+      "floor": {
+        "family": "marble",
+        "textureId": "glossy-marble",
+        "group": "stone",
+        "baseHex": "#c5bfb3",
+        "snapDeltaE": 3.9,
+        "confidence": 0.733,
+        "photos": 2
+      },
+      "wall": {
+        "hex": "#c7c1b4",
+        "confidence": 0.704,
+        "consistency": 0.99,
+        "photos": 2
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#c5bfb3",
+          "wallHex": "#c7c0b4"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#cfcfd0",
+          "wallHex": "#c8c1b4"
+        }
+      ]
+    },
+    "4551025131888867": {
+      "id": "4551025131888867",
+      "photoCount": 4,
+      "source": "classical",
+      "floor": {
+        "family": "concrete",
+        "textureId": "mid-concrete",
+        "group": "stone",
+        "baseHex": "#adaaa9",
+        "snapDeltaE": 2.8,
+        "confidence": 0.599,
+        "photos": 3
+      },
+      "wall": {
+        "hex": "#cbc8c1",
+        "confidence": 0.478,
+        "consistency": 0.78,
+        "photos": 4
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#adaaa9",
+          "wallHex": "#d6d0c6"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#b2909c",
+          "wallHex": "#d1d3cf"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#b5a89a",
+          "wallHex": "#b4aba1"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#9e8362",
+          "wallHex": "#d4d3d0"
+        }
+      ]
+    },
+    "4551033371888043": {
+      "id": "4551033371888043",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "marble",
+        "textureId": "glossy-marble",
+        "group": "stone",
+        "baseHex": "#c6bfb7",
+        "snapDeltaE": 3.4,
+        "confidence": 0.751,
+        "photos": 5
+      },
+      "wall": {
+        "hex": "#bcbbb9",
+        "confidence": 0.521,
+        "consistency": 0.7,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#ccbdbd",
+          "wallHex": "#d3d4d8"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#c4b9ab",
+          "wallHex": "#c1c1c3"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#cececc",
+          "wallHex": "#d1cfce"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#c6bfb7",
+          "wallHex": "#9f9b90"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#b4ab9c",
+          "wallHex": "#acada9"
+        }
+      ]
+    },
+    "4551034888554558": {
+      "id": "4551034888554558",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "tile",
+        "textureId": "grey-tile",
+        "group": "stone",
+        "baseHex": "#bdc2bf",
+        "snapDeltaE": 3,
+        "confidence": 0.716,
+        "photos": 5
+      },
+      "wall": {
+        "hex": "#cacbc9",
+        "confidence": 0.619,
+        "consistency": 0.73,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#576270",
+          "wallHex": "#d1d2d1"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#bdc2bf",
+          "wallHex": "#cfd0cd"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#cecfcf",
+          "wallHex": "#ceced1"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#c3bfbc",
+          "wallHex": "#9a978a"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#c3cfdb",
+          "wallHex": "#d6e0e1"
+        }
+      ]
+    },
+    "4551035318554515": {
+      "id": "4551035318554515",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "tile",
+        "textureId": "grey-tile",
+        "group": "stone",
+        "baseHex": "#c1bfbe",
+        "snapDeltaE": 2.1,
+        "confidence": 0.63,
+        "photos": 4
+      },
+      "wall": {
+        "hex": "#beb8a9",
+        "confidence": 0.4,
+        "consistency": 0.63,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#c4a585",
+          "wallHex": "#c9d3e1"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#d6d3cb",
+          "wallHex": "#c4bfb2"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#c1bfbe",
+          "wallHex": "#c4bea6"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#cfbca2",
+          "wallHex": "#aa9582"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#b0ab9d",
+          "wallHex": "#b4ab90"
+        }
+      ]
+    },
+    "4551037518554295": {
+      "id": "4551037518554295",
+      "photoCount": 5,
+      "source": "classical",
+      "floor": {
+        "family": "concrete",
+        "textureId": "dark-concrete",
+        "group": "stone",
+        "baseHex": "#696557",
+        "snapDeltaE": 7.1,
+        "confidence": 0.495,
+        "photos": 4
+      },
+      "wall": {
+        "hex": "#b1b1ac",
+        "confidence": 0.457,
+        "consistency": 0.65,
+        "photos": 5
+      },
+      "furniture": [],
+      "perPhoto": [
+        {
+          "file": "1.jpg",
+          "floorFamily": null,
+          "floorHex": "#51403c",
+          "wallHex": "#cececd"
+        },
+        {
+          "file": "2.jpg",
+          "floorFamily": null,
+          "floorHex": "#e5ebf2",
+          "wallHex": "#969b9a"
+        },
+        {
+          "file": "3.jpg",
+          "floorFamily": null,
+          "floorHex": "#644e49",
+          "wallHex": "#acaba1"
+        },
+        {
+          "file": "4.jpg",
+          "floorFamily": null,
+          "floorHex": "#b89182",
+          "wallHex": "#cfd2d0"
+        },
+        {
+          "file": "5.jpg",
+          "floorFamily": null,
+          "floorHex": "#696557",
+          "wallHex": "#9c968c"
+        }
+      ]
+    }
+  }
+}

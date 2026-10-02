@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roomio — Showcase</title>
+    <style>
+      html, body, #root { margin: 0; height: 100%; }
+      body { font-family: ui-sans-serif, system-ui, sans-serif; background: #1c1b19; color: #f3f1ec; }
+      * { box-sizing: border-box; }
+    </style>
+  </head>
+  <body>
+    <!--
+      VIEW-ONLY SHOWCASE entry point. Deliberately SEPARATE from index.html: it
+      imports only the read-only showcase bundle and a single design's envelope —
+      it can NEVER reach the editor, the library, or other designs. (Defends the
+      cardinal sin: a view link leaking into the editor.) Full impl in C2-4.
+    -->
+    <div id="root"></div>
+    <script type="module" src="/src/showcase/main.tsx"></script>
+  </body>
+</html>

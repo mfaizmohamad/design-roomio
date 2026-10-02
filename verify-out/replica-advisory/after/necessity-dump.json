@@ -1,0 +1,344 @@
+{
+  "kothrud-2bhk": [
+    {
+      "name": "Balcony",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [],
+      "necessity": [],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Living Room",
+      "roomType": "living",
+      "isReplica": true,
+      "furniture": [
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Kitchen",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [
+        "kitchen-counter",
+        "kitchen-counter"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Dry Balcony",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [],
+      "necessity": [],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Hallway",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [],
+      "necessity": [],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Master Bedroom",
+      "roomType": "bedroom",
+      "isReplica": true,
+      "furniture": [
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bathroom",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [
+        "bath-geyser",
+        "bath-toilet"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bedroom 2",
+      "roomType": "bedroom",
+      "isReplica": true,
+      "furniture": [
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    }
+  ],
+  "malad-1bhk": [
+    {
+      "name": "Hall",
+      "roomType": "living",
+      "isReplica": true,
+      "furniture": [
+        "storage-tv",
+        "decor-tv",
+        "sofa-3",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "Seating has no rug",
+        "All seating is against the walls",
+        "Seating has no coffee/side table",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bedroom",
+      "roomType": "bedroom",
+      "isReplica": true,
+      "furniture": [
+        "bed-full",
+        "storage-wardrobe",
+        "table-vanity",
+        "decor-mirror",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "Bed has no nightstand",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Kitchen",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [
+        "kitchen-counter",
+        "kitchen-counter",
+        "kitchen-stove"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Utility",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [
+        "kitchen-fridge",
+        "kitchen-washer",
+        "bath-vanity",
+        "bath-geyser"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bathroom",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [
+        "bath-toilet",
+        "bath-shower",
+        "bath-geyser"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    }
+  ],
+  "andheri-pg": [
+    {
+      "name": "Hall",
+      "roomType": "living",
+      "isReplica": true,
+      "furniture": [
+        "bed-twin",
+        "bed-twin",
+        "storage-wardrobe",
+        "storage-tv",
+        "decor-ceiling-fan",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "Bed has no nightstand",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Balcony",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [],
+      "necessity": [],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bedroom",
+      "roomType": "bedroom",
+      "isReplica": true,
+      "furniture": [
+        "bed-twin",
+        "storage-wardrobe",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "Bed has no nightstand",
+        "No greenery",
+        "Room is getting crowded"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bedroom 2",
+      "roomType": "bedroom",
+      "isReplica": true,
+      "furniture": [
+        "bed-twin",
+        "storage-wardrobe",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "Bed has no nightstand",
+        "No greenery",
+        "Room is getting crowded"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Hallway",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [],
+      "necessity": [],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Kitchen",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [
+        "kitchen-counter",
+        "kitchen-fridge",
+        "kitchen-washer",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery",
+        "Room is getting crowded"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bathroom",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [
+        "bath-toilet"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    },
+    {
+      "name": "Bathroom 2",
+      "roomType": "(undefined→living)",
+      "isReplica": true,
+      "furniture": [
+        "bath-toilet"
+      ],
+      "necessity": [],
+      "polish": [
+        "No clear focal point",
+        "No greenery"
+      ],
+      "placementWarnings": []
+    }
+  ],
+  "oshiwara-room": [
+    {
+      "name": "Room",
+      "roomType": "bedroom",
+      "isReplica": true,
+      "furniture": [
+        "bed-full",
+        "storage-nightstand",
+        "storage-wardrobe",
+        "decor-ladder-shelf",
+        "decor-curtain",
+        "decor-ac",
+        "decor-rug-large",
+        "ottoman-pouf",
+        "table-side",
+        "decor-ceiling-fan"
+      ],
+      "necessity": [],
+      "polish": [
+        "No greenery"
+      ],
+      "placementWarnings": []
+    }
+  ]
+}
